@@ -1,0 +1,30 @@
+.search-button-container {
+    padding: 15px 30px 10px 25px;
+    border-radius: 60px;
+    background-color: #e0e4e9;
+    margin: 0 auto;
+    width: 70%;
+    min-height: 50px;
+    display: flex;
+    align-content: center;
+    justify-content: center
+}
+
+input[data-v-7b76dd88] {
+    border: 2px solid #e0e4e9;
+    text-align: center
+}
+
+input[data-v-7b76dd88]::placeholder {
+    color: #304d6d
+}
+
+.header span.button-label {
+    color: #fff
+}
+
+@media(max-width:768px) {
+    .search-button-container {
+        flex-direction: column
+    }
+}
