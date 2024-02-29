@@ -1,30 +1,28 @@
 <template>
     <div class="p-4">
-        <div id="search-filters" class="p-6 mb-6 rounded-lg flex flex-wrap gap-4 justify-between">
+        <div id="search-filters" class="p-6 mb-6 rounded-lg flex flex-wrap gap-4 justify-end">
             <div class="w-9/12 flex-grow">
-                <input
-                    type="text"
-                    v-model="searchTerm"
-                    @keyup.enter="fetchAndSetParts"
-                    placeholder="Search by Keyword"
-                    class="px-4 py-2 w-full border rounded-full"
-                />
+                <input type="text" v-model="searchTerm" @keyup.enter="fetchAndSetParts" placeholder="Search by Keyword"
+                    class="px-4 py-2 w-full border rounded-full" />
             </div>
             <div class="clear-search-wrapper w-2/12">
-              <div class="clear-search">
-                <a @click.prevent="clearFilters" class="block button text-center transition-all duration-300">Clear Filters</a>
-              </div>            
+                <div class="clear-search">
+                    <a href="/" class="block button text-center transition-all duration-300">Clear
+                        Filters</a>
+                </div>
             </div>
             <div class="w-full lg:w-5/12 flex-grow">
-                <DropDown @option-selected="selectManufacturer" ref="manufacturerDD" :selected-value="manufacturer" collection="manufacturers" placeholder="Filter by Manufacturer"></DropDown>
+                <DropDown @option-selected="selectManufacturer" ref="manufacturerDD" :selected-value="manufacturer"
+                    collection="manufacturers" placeholder="Filter by Manufacturer"></DropDown>
             </div>
             <div class="w-full lg:w-5/12 flex-grow">
-                <DropDown @option-selected="selectModality" ref="modalityDD" :selected-value="modality" collection="modalities" placeholder="Filter by Modality"></DropDown>
+                <DropDown @option-selected="selectModality" ref="modalityDD" :selected-value="modality"
+                    collection="modalities" placeholder="Filter by Modality"></DropDown>
             </div>
-        </div>        
+        </div>
         <div id="parts-list">
             <div class="w-full lg:table table-auto">
-                <div class="text-white md:hidden lg:table-header-group">
+                <div class="text-white table-header-group">
                     <div class="table-row table-header">
                         <div class="table-cell px-4 py-2">Image</div>
                         <div class="table-cell px-4 py-2">Brand</div>
@@ -55,11 +53,15 @@
             <button v-for="p in paginationRange" :key="p" @click="goToPage(p)" :class="{ 'current': p === page }">
                 {{ p }}
             </button>
-            <button @click="goToPage(page + 1)" :disabled="page === totalPages"><i class="fa-solid fa-arrow-right"></i></button>
-            <button @click="goToPage(totalPages)" :disabled="page === totalPages"><i class="fa-solid fa-arrow-right-to-line"></i></button>
+            <button @click="goToPage(page + 1)" :disabled="page === totalPages"><i
+                    class="fa-solid fa-arrow-right"></i></button>
+            <button @click="goToPage(totalPages)" :disabled="page === totalPages"><i
+                    class="fa-solid fa-arrow-right-to-line"></i></button>
         </div>
         <div class="showing text-center">
-            Showing {{ page != 1 ? (page-1) * limit : 1 }} to {{ limit * page > totalItems ? totalItems : limit * page }} of {{ totalItems }} records
+            Showing {{ page != 1 ? (page - 1) * limit : 1 }} to {{ limit * page > totalItems ? totalItems : limit * page }}
+            of
+            {{ totalItems }} records
         </div>
         <div class="flex justify-end">
             <div class="ppp m-4 p-2 rounded">
@@ -165,21 +167,21 @@ const clearFilters = () => {
     searchTerm.value = '';
     modalityDD.value.clearFilters();
     manufacturerDD.value.clearFilters();
-    router.push({ path: '/' });
+    updateUrl();
 }
 
 const totalPages = computed(() => Math.ceil(totalItems.value / limit.value));
 
 const paginationRange = computed(() => {
-  const totalDisplayed = 5; // Adjust this to show more or fewer page numbers
-  let start = page.value - Math.floor(totalDisplayed / 2);
-  start = Math.max(start, 1);
-  let end = start + totalDisplayed - 1;
-  end = Math.min(end, totalPages.value);
-  if (end - start + 1 < totalDisplayed && start > 1) {
-    start = Math.max(end - totalDisplayed + 1, 1);
-  }
-  return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+    const totalDisplayed = 5; // Adjust this to show more or fewer page numbers
+    let start = page.value - Math.floor(totalDisplayed / 2);
+    start = Math.max(start, 1);
+    let end = start + totalDisplayed - 1;
+    end = Math.min(end, totalPages.value);
+    if (end - start + 1 < totalDisplayed && start > 1) {
+        start = Math.max(end - totalDisplayed + 1, 1);
+    }
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
 });
 </script>
 
@@ -187,16 +189,28 @@ const paginationRange = computed(() => {
 <style lang="less" scoped>
 #search-filters {
     background-color: #e0e4e9;
-    .clear-search a {
-        background-color: #304d6d;
-        &:hover {
-            background-color: firebrick;
+
+    .clear-search-wrapper {
+        @media screen and (max-width: 1023px) {
+            min-width: 200px;
+            order: 10;
+        }
+
+        .clear-search {
+            a {
+                background-color: #304d6d;
+
+                &:hover {
+                    background-color: firebrick;
+                }
+            }
         }
     }
 }
 
 #pagination {
     margin-bottom: 25px;
+
     button {
         appearance: none;
         border: none;
@@ -210,21 +224,26 @@ const paginationRange = computed(() => {
         background-color: #dc602e;
         font-size: 18px;
         line-height: 18px;
+
         &:hover {
             background-color: #2275b5;
         }
     }
 }
+
 .ppp {
     background-color: #e0e4e9;
     font-size: 18px;
+
     label {
         margin-right: 10px;
     }
+
     select {
         border: none;
     }
 }
+
 .button {
     border-radius: 50px;
     padding: 10px 15px;
@@ -232,9 +251,11 @@ const paginationRange = computed(() => {
     white-space: nowrap;
     transition: all .3s ease;
 }
+
 .actions {
     .button {
         background-color: #dc602e;
+
         &:hover {
             background-color: #2275b5;
         }
@@ -244,14 +265,24 @@ const paginationRange = computed(() => {
 #parts-list {
     font-size: 18px;
     margin-bottom: 50px;
+
     @media screen and (min-width: 1024px) {
         border-right: 1px solid #d2e9fc;
         border-bottom: 1px solid #d2e9fc;
-        .table-cell, .part>div {
+
+        .table-cell,
+        .part>div {
             border-top: 1px solid #d2e9fc;
             border-left: 1px solid #d2e9fc;
         }
     }
+
+    .table-header-group {
+        @media screen and (max-width: 1023px) {
+            display: none;
+        }
+    }
+
     .table-header {
         background-color: #304d6d;
         .table-cell {
@@ -260,35 +291,43 @@ const paginationRange = computed(() => {
             font-weight: bold;
         }
     }
+
     &>div {
         @media screen and (max-width: 1023px) {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
         }
+
         @media screen and (max-width: 768px) {
             display: grid;
             grid-template-columns: 1fr;
         }
     }
+
     .part {
         @media screen and (min-width: 1024px) {
             display: table-row;
+
             &>div {
                 display: table-cell;
                 vertical-align: middle;
                 text-align: center;
+
                 label {
                     display: none;
                 }
+
                 &:first-of-type {
                     height: 115px;
                 }
             }
+
             &:nth-of-type(odd) {
                 background-color: #eff7ff;
             }
         }
+
         @media screen and (max-width: 1023px) {
             max-width: 480px;
             width: 100%;
@@ -302,6 +341,7 @@ const paginationRange = computed(() => {
                 &:after {
                     content: ':';
                 }
+
                 margin-right: 10px;
                 font-weight: normal;
                 font-style: italic;
@@ -311,17 +351,21 @@ const paginationRange = computed(() => {
                 order: 0;
                 background-color: #eff7ff;
             }
+
             .pn {
                 order: 1;
-                
+
             }
+
             .manufacturer {
                 order: 2;
                 background-color: #eff7ff;
             }
+
             .title {
                 order: 3;
             }
+
             .actions {
                 width: 100%;
                 order: 4;
