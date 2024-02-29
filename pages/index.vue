@@ -383,6 +383,7 @@ const paginationRange = computed(() => {
 
             .title {
                 order: 3;
+                word-break: break-word;
             }
 
             .actions {
