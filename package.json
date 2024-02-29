@@ -7,7 +7,8 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "start": "node .output/server/index.mjs"
   },
   "dependencies": {
     "@nuxt/ui": "^2.13.0",
@@ -24,5 +25,8 @@
     "@nuxtjs/tailwindcss": "^6.11.4",
     "autoprefixer": "^10.4.17",
     "postcss": "^8.4.35"
-  }
+  },
+  "engines": {
+    "node": "20.x"
+  } 
 }
