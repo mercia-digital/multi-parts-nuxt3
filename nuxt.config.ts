@@ -17,7 +17,11 @@ export default defineNuxtConfig({
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        // Add other meta tags as needed
+        {
+          hid: 'google-site-verification',
+          name: 'google-site-verification',
+          content: 'RTo4vA1tJKoUSDzXeiu-tVWH2_K2PwVScCdZoqQyl7A',
+        },
       ],
       link: [
         { 
@@ -31,7 +35,29 @@ export default defineNuxtConfig({
           crossorigin: 'anonymous',
           async: true,
         },
+        {
+          src: 'https://js.hs-scripts.com/4679263.js',
+          id: 'hs-script-loader',
+          async: true,
+          defer: true,
+          type: "text/javascript"
+        },
+        {
+          src: 'https://www.googletagmanager.com/gtag/js?id=G-LPH95E885X',
+          async: true,
+        },
+        {
+          innerHTML: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-LPH95E885X');
+          `,
+          type: 'text/javascript',
+          charset: 'utf-8',
+        },
       ],
+      __dangerouslyDisableSanitizers: ['script'],
       // Add other head properties as needed
     },
   }  
