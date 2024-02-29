@@ -48,14 +48,16 @@
         </div>
         <!-- Pagination Controls and Limit Selection -->
         <div id="pagination" class="flex justify-center items-center gap-2 mt-4">
-            <button @click="goToPage(1)" :disabled="page === 1"><i class="fa-solid fa-arrow-left-to-line"></i></button>
             <button @click="goToPage(page - 1)" :disabled="page === 1"><i class="fa-solid fa-arrow-left"></i></button>
-            <button v-for="p in paginationRange" :key="p" @click="goToPage(p)" :class="{ 'current': p === page }">
+            <button v-for="p in paginationRange" :key="p" @click="goToPage(p)" class="number" :class="[{ 'current': p === page }]">
                 {{ p }}
             </button>
             <button @click="goToPage(page + 1)" :disabled="page === totalPages"><i
                     class="fa-solid fa-arrow-right"></i></button>
-            <button @click="goToPage(totalPages)" :disabled="page === totalPages"><i
+        </div>
+        <div id="pagination" class="flex justify-center items-center gap-2 mt-4">
+            <button @click="goToPage(1)" :disabled="page === 1"><i class="fa-solid fa-arrow-left-to-line"></i> First</button>
+            <button @click="goToPage(totalPages)" :disabled="page === totalPages">Last <i
                     class="fa-solid fa-arrow-right-to-line"></i></button>
         </div>
         <div class="showing text-center">
@@ -224,6 +226,23 @@ const paginationRange = computed(() => {
         background-color: #dc602e;
         font-size: 18px;
         line-height: 18px;
+
+        &.hide-on-mobile {
+            @media screen and (max-width: 1023px) {
+                display: none;
+            }
+        }
+        &.current {
+            background-color: #fff;
+            color: #dc602e;
+            border: solid 2px #dc602e;
+        }
+
+        &:last-of-type {
+            color: #fff;
+            background-color: #dc602e;
+            border: none;
+        }
 
         &:hover {
             background-color: #2275b5;
