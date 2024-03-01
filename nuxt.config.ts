@@ -24,47 +24,32 @@ export default defineNuxtConfig({
     cacheMaxAgeSeconds: 43200, //12 hrs
     // modify the chunk size if you need
     defaultSitemapsChunkSize: 10000, // default 1000
-    // sources: [
-    //   '/api/__sitemap__/urls',
-    // ]
-    sitemaps: {
-      pages: {
-        urls: [
-          {
-            url: "https://parts.multi-inc.com",
-            lastmod: new Date().toISOString()
-          }
-        ]
-      },
-      parts: {
-        urls: async () => {
-          const axios = require('axios');
-          const queryParams = new URLSearchParams({
-            sort: '-sort,part_number',
-            'fields[]': ['part_number', 'date_updated'],
-            limit: -1
+    urls: async () => {
+      const axios = require('axios');
+      const queryParams = new URLSearchParams({
+        sort: '-sort,part_number',
+        'fields[]': ['part_number', 'date_updated'],
+        limit: -1
+      });
+      const queryString = queryParams.toString();
+
+      const response = await axios.get(`https://order.multi-inc.com/items/parts?${queryString}`);
+
+      const _lastmod = new Date().toISOString();
+
+      const urls = [];
+      for (const part of response.data.data) {
+        if (part.part_number) {
+          urls.push({
+            url: `/part/${part.part_number}`,
+            lastmod: _lastmod,
+            //changefreq: 'weekly',
+            //priority: 0.8,
           });
-          const queryString = queryParams.toString();
-    
-          const response = await axios.get(`https://order.multi-inc.com/items/parts?${queryString}`);
-    
-          const _lastmod = new Date().toISOString();
-    
-          const urls = [];
-          for (const part of response.data.data) {
-            if (part.part_number) {
-              urls.push({
-                url: `/part/${part.part_number}`,
-                lastmod: _lastmod,
-                //changefreq: 'weekly',
-                //priority: 0.8,
-              });
-            }
-          }
-          return urls;
-        },
+        }
       }
-    }
+      return urls;
+    },
   },
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
