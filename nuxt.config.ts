@@ -27,32 +27,32 @@ export default defineNuxtConfig({
     // sources: [
     //   '/api/__sitemap__/urls',
     // ]
-    urls: async () => {
-      const axios = require('axios');
-      const queryParams = new URLSearchParams({
-        sort: '-sort,part_number',
-        'fields[]': ['part_number', 'date_updated'],
-        limit: -1
-      });
-      const queryString = queryParams.toString();
+    // urls: async () => {
+    //   const axios = require('axios');
+    //   const queryParams = new URLSearchParams({
+    //     sort: '-sort,part_number',
+    //     'fields[]': ['part_number', 'date_updated'],
+    //     limit: -1
+    //   });
+    //   const queryString = queryParams.toString();
 
-      const response = await axios.get(`https://order.multi-inc.com/items/parts?${queryString}`);
+    //   const response = await axios.get(`https://order.multi-inc.com/items/parts?${queryString}`);
 
-      const _lastmod = new Date().toISOString();
+    //   const _lastmod = new Date().toISOString();
 
-      const urls = [];
-      for (const part of response.data.data) {
-        if (part.part_number) {
-          urls.push({
-            url: `/part/${part.part_number}`,
-            lastmod: _lastmod,
-            //changefreq: 'weekly',
-            //priority: 0.8,
-          });
-        }
-      }
-      return urls;
-    },
+    //   const urls = [];
+    //   for (const part of response.data.data) {
+    //     if (part.part_number) {
+    //       urls.push({
+    //         url: `/part/${part.part_number}`,
+    //         lastmod: _lastmod,
+    //         //changefreq: 'weekly',
+    //         //priority: 0.8,
+    //       });
+    //     }
+    //   }
+    //   return urls;
+    // },
   },
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
