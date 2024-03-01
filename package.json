@@ -13,6 +13,7 @@
   "dependencies": {
     "@nuxt/ui": "^2.13.0",
     "@splidejs/vue-splide": "^0.6.12",
+    "axios": "^1.6.7",
     "he": "^1.2.0",
     "less": "^4.2.0",
     "nuxt": "^3.10.2",
@@ -22,11 +23,13 @@
     "vue3-carousel-nuxt": "^1.1.0"
   },
   "devDependencies": {
+    "@nuxtjs/seo": "^2.0.0-rc.8",
+    "@nuxtjs/sitemap": "^5.1.0",
     "@nuxtjs/tailwindcss": "^6.11.4",
     "autoprefixer": "^10.4.17",
     "postcss": "^8.4.35"
   },
   "engines": {
     "node": "20.x"
-  } 
+  }
 }

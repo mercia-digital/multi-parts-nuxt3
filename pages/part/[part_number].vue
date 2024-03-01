@@ -1,6 +1,6 @@
 <template>
   <Head>
-      <Title>{{ `${getPartNumber(partDetails)} - ${partDetails.manufacturer.name} | ${partDetails.title}` }}</Title>
+      <Title>{{ `${getPartNumber(partDetails)} - ${partDetails.manufacturer.name} - ${partDetails.title}` }}</Title>
       <Meta name="description" :content="`Explore ${partDetails.title} (${getPartNumber(partDetails)}) from ${partDetails.manufacturer.name}. High-quality parts for Healthcare Technology Management.`" />
       <Meta property="og:title" :content="`${getPartNumber(partDetails)} - ${partDetails.manufacturer.name} | ${partDetails.title}`" />
       <Meta property="og:description" :content="`Explore ${partDetails.title} (${getPartNumber(partDetails)}) from ${partDetails.manufacturer.name}. High-quality parts for Healthcare Technology Management.`" />
@@ -68,7 +68,7 @@ const { fetchPartDetails } = usePartsService()
 const router = useRouter();
 
 function goBack() {
-  console.log(router.back());
+  router.back();
 }
 
 const getPartNumber = (part) => {

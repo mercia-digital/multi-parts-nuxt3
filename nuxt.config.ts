@@ -9,7 +9,51 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/tailwindcss',
     'vue3-carousel-nuxt',
+    '@nuxtjs/seo',
+    '@nuxtjs/sitemap'
   ],
+  site: {
+    //url: 'https://parts.multi-inc.com',
+    name: 'MULTI, INC. Parts Catalog',
+    description: 'MULTI, INC. exists to provide access to authentic parts, services, and technology through our OEM allegiant relationships. Explore our vast parts catalog.',
+    defaultLocale: 'en', // not needed if you have @nuxtjs/i18n installed
+  },
+  sitemap: {
+    sitemaps: true,
+    xsl: false,
+    cacheMaxAgeSeconds: 60,
+    // modify the chunk size if you need
+    defaultSitemapsChunkSize: 10000, // default 1000
+    // sources: [
+    //   '/api/__sitemap__/urls',
+    // ]
+    urls: async () => {
+      const axios = require('axios');
+      const queryParams = new URLSearchParams({
+        sort: '-sort,part_number',
+        'fields[]': ['part_number', 'date_updated'],
+        limit: -1
+      });
+      const queryString = queryParams.toString();
+
+      const response = await axios.get(`https://order.multi-inc.com/items/parts?${queryString}`);
+
+      const _lastmod = new Date().toISOString();
+
+      const urls = [];
+      for (const part of response.data.data) {
+        if (part.part_number) {
+          urls.push({
+            url: `/part/${part.part_number}`,
+            lastmod: _lastmod,
+            //changefreq: 'weekly',
+            //priority: 0.8,
+          });
+        }
+      }
+      return urls;
+    },
+  },
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
     head: {
@@ -24,7 +68,7 @@ export default defineNuxtConfig({
         },
       ],
       link: [
-        { 
+        {
           rel: 'icon',
           href: '/multi_favicon.webp'
         }
@@ -60,5 +104,5 @@ export default defineNuxtConfig({
       __dangerouslyDisableSanitizers: ['script'],
       // Add other head properties as needed
     },
-  }  
+  }
 })

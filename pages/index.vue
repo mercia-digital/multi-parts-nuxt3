@@ -97,12 +97,16 @@ const modality = ref(route.query.modality ? decodeURI(route.query.modality) : ''
 const manufacturerDD = ref(null);
 const modalityDD = ref(null);
 
-useSeoMeta({
-    title: 'MULTI, INC. Parts Catalog',
-    ogTitle: 'MULTI, INC. Parts Catalog',
-    description: 'MULTI, INC. exists to provide access to authentic parts, services, and technology through our OEM allegiant relationships. Explore our vast parts catalog.',
-    ogDescription: 'MULTI, INC. exists to provide access to authentic parts, services, and technology through our OEM allegiant relationships. Explore our vast parts catalog.',
-});
+// useSeoMeta({
+//     title: 'MULTI, INC. Parts Catalog',
+//     ogTitle: 'MULTI, INC. Parts Catalog',
+//     description: 'MULTI, INC. exists to provide access to authentic parts, services, and technology through our OEM allegiant relationships. Explore our vast parts catalog.',
+//     ogDescription: 'MULTI, INC. exists to provide access to authentic parts, services, and technology through our OEM allegiant relationships. Explore our vast parts catalog.',
+// });
+
+useHead({
+  titleTemplate: '%siteName'
+})
 
 const fetchAndSetParts = async () => {
     const { data, error } = await usePartsService().fetchParts({
