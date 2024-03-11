@@ -1,9 +1,9 @@
 <template>
   <Head>
-      <Title>{{ `${getPartNumber(partDetails)} - ${partDetails.manufacturer.name} - ${partDetails.title}` }}</Title>
-      <Meta name="description" :content="`Part #: ${getPartNumber(partDetails)} by ${partDetails.manufacturer.name} -- ${partDetails.title} -- High-quality parts for Healthcare Technology Management.`" />
-      <Meta property="og:title" :content="`${getPartNumber(partDetails)} - ${partDetails.manufacturer.name} | ${partDetails.title}`" />
-      <Meta property="og:description" :content="`Part #: ${getPartNumber(partDetails)} by ${partDetails.manufacturer.name} -- ${partDetails.title} -- High-quality parts for Healthcare Technology Management.`" />
+      <Title>{{ `${getPartNumber(partDetails)} - ${partDetails.manufacturer?.name} - ${partDetails.title}` }}</Title>
+      <Meta name="description" :content="`Part #: ${getPartNumber(partDetails)} by ${partDetails.manufacturer?.name} -- ${partDetails.title} -- High-quality parts for Healthcare Technology Management.`" />
+      <Meta property="og:title" :content="`${getPartNumber(partDetails)} - ${partDetails.manufacturer?.name} | ${partDetails.title}`" />
+      <Meta property="og:description" :content="`Part #: ${getPartNumber(partDetails)} by ${partDetails.manufacturer?.name} -- ${partDetails.title} -- High-quality parts for Healthcare Technology Management.`" />
     </Head>
   <div class="container mx-auto p-4" v-if="!pending && partDetails">
     <div class="text-right mb-4">
