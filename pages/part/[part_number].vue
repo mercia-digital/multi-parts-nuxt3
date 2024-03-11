@@ -1,9 +1,9 @@
 <template>
   <Head>
-      <Title>{{ `${getPartNumber(partDetails)} - ${partDetails.manufacturer?.name} - ${partDetails.title}` }}</Title>
-      <Meta name="description" :content="`Part #: ${getPartNumber(partDetails)} by ${partDetails.manufacturer?.name} -- ${partDetails.title} -- High-quality parts for Healthcare Technology Management.`" />
-      <Meta property="og:title" :content="`${getPartNumber(partDetails)} - ${partDetails.manufacturer?.name} | ${partDetails.title}`" />
-      <Meta property="og:description" :content="`Part #: ${getPartNumber(partDetails)} by ${partDetails.manufacturer?.name} -- ${partDetails.title} -- High-quality parts for Healthcare Technology Management.`" />
+      <Title>{{ metaTitle }}</Title>
+      <Meta name="description" :content="metaDescription" />
+      <Meta property="og:title" :content="metaTitle" />
+      <Meta property="og:description" :content="metaDescription" />
     </Head>
   <div class="container mx-auto p-4" v-if="!pending && partDetails">
     <div class="text-right mb-4">
@@ -13,14 +13,14 @@
     </div>
     <div class="flex flex-wrap">
       <div class="w-full lg:w-1/2 p-2">
-        <h2 class="text-2xl font-bold">{{ partDetails.title }}</h2>
+        <h2 class="text-2xl font-bold">{{ partTitle }}</h2>
         <h3>{{ partDetails.manufacturer?.name }} — Part # {{ partDetails.part_number }}</h3>
         <a :href="`https://www.multi-inc.com/request-a-quote-parts?part_numbers=${partDetails.part_number}`"
           target="_blank"
           class="inline-block bg-orange-500 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded my-2">
           Request a Quote
         </a>
-        <div v-html="unescapedContent" class="product-content mt-4"></div>
+        <div v-html="partContent" class="product-content mt-4"></div>
       </div>
       <div class="w-full lg:w-1/2 p-2">
         <div v-if="partDetails.primary_image">
@@ -83,14 +83,19 @@ const getPartNumber = (part) => {
 // useAsyncData for SSR-compatible fetching
 const { data: partDetails, pending, error } = useAsyncData(() => fetchPartDetails(route.params.part_number))
 
-const unescapedContent = computed(() => he.decode(partDetails.value.content));
+const partContent = computed(() => he.decode(partDetails.value.content));
+const partTitle = computed(() => he.decode(partDetails.value.title));
+const partManufacturer = computed(() => (typeof partDetails.value.manufacturer?.name === 'undefined' ? '' : partDetails.value.manufacturer?.name));
+
+const metaTitle = computed(() => `${getPartNumber(partDetails.value)}${partManufacturer.value ? ' - '+ partManufacturer.value : ''} - ${partTitle.value}` );
+const metaDescription = computed(() => `Part #: ${getPartNumber(partDetails.value)}${partManufacturer.value ? ' by '+ partManufacturer.value : ''} -- ${partTitle.value} -- High-quality parts for Healthcare Technology Management.` );
 </script>
 
 <style lang="less" scoped>
 h1 {
   color: #2275b5;
-  font-size: 20px;
-  line-height: 28px;
+  font-size: 33px;
+  line-height: 38px;
   font-weight: 500;
   margin-bottom: 25px;
 }
