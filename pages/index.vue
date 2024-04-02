@@ -20,61 +20,66 @@
                     collection="modalities" placeholder="Filter by Modality"></DropDown>
             </div>
         </div>
-        <div id="parts-list">
-            <div class="w-full lg:table table-auto">
-                <div class="text-white table-header-group">
-                    <div class="table-row table-header">
-                        <div class="table-cell px-4 py-2">Image</div>
-                        <div class="table-cell px-4 py-2">Brand</div>
-                        <div class="table-cell px-4 py-2">Part Number</div>
-                        <div class="table-cell px-4 py-2">Part Description</div>
-                        <div class="table-cell px-4 py-2"></div> <!-- Actions Column -->
+        <div v-if="totalItems > 0">
+            <div id="parts-list">
+                <div class="w-full lg:table table-auto">
+                    <div class="text-white table-header-group">
+                        <div class="table-row table-header">
+                            <div class="table-cell px-4 py-2">Image</div>
+                            <div class="table-cell px-4 py-2">Brand</div>
+                            <div class="table-cell px-4 py-2">Part Number</div>
+                            <div class="table-cell px-4 py-2">Part Description</div>
+                            <div class="table-cell px-4 py-2"></div> <!-- Actions Column -->
+                        </div>
                     </div>
-                </div>
-                <div v-for="part in parts" :key="part.part_number" class="part">
-                    <div class="image text-center p-2">
-                        <img :src="getImageUrl(part.primary_image)" class="w-100px w-100px mx-auto" alt="Part image">
-                    </div>
-                    <div class="manufacturer p-2"><label>Brand</label>{{ part.manufacturer?.name }}</div>
-                    <div class="pn p-2"><label>Part Number</label>{{ getPartNumber(part) }}</div>
-                    <div class="title p-2 uppercase"><label>Part Description</label>{{ part.title }}</div>
-                    <div class="actions p-2 flex justify-around">
-                        <a :href="`/part/${part.part_number}`" class="button m-1">View Part</a>
-                        <a :href="`https://www.multi-inc.com/request-a-quote-parts?part_numbers=${part.part_number}`"
-                            class="button m-1" target="_blank">Request a Quote</a>
+                    <div v-for="part in parts" :key="part.part_number" class="part">
+                        <div class="image text-center p-2">
+                            <img :src="getImageUrl(part.primary_image)" class="w-100px w-100px mx-auto" alt="Part image">
+                        </div>
+                        <div class="manufacturer p-2"><label>Brand</label>{{ part.manufacturer?.name }}</div>
+                        <div class="pn p-2"><label>Part Number</label>{{ getPartNumber(part) }}</div>
+                        <div class="title p-2 uppercase"><label>Part Description</label>{{ part.title }}</div>
+                        <div class="actions p-2 flex justify-around">
+                            <a :href="`/part/${part.part_number}`" class="button m-1">View Part</a>
+                            <a :href="`https://www.multi-inc.com/request-a-quote-parts?part_numbers=${part.part_number}`"
+                                class="button m-1" target="_blank">Request a Quote</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- Pagination Controls and Limit Selection -->
-        <div id="pagination" class="flex justify-center items-center gap-2 mt-4">
-            <button @click="goToPage(page - 1)" :disabled="page === 1"><i class="fa-solid fa-arrow-left"></i></button>
-            <button v-for="p in paginationRange" :key="p" @click="goToPage(p)" class="number" :class="[{ 'current': p === page }]">
-                {{ p }}
-            </button>
-            <button @click="goToPage(page + 1)" :disabled="page === totalPages"><i
-                    class="fa-solid fa-arrow-right"></i></button>
-        </div>
-        <div id="pagination" class="flex justify-center items-center gap-2 mt-4">
-            <button @click="goToPage(1)" :disabled="page === 1"><i class="fa-solid fa-arrow-left-to-line"></i> First</button>
-            <button @click="goToPage(totalPages)" :disabled="page === totalPages">Last <i
-                    class="fa-solid fa-arrow-right-to-line"></i></button>
-        </div>
-        <div class="showing text-center">
-            Showing {{ page != 1 ? (page - 1) * limit : 1 }} to {{ limit * page > totalItems ? totalItems : limit * page }}
-            of
-            {{ totalItems }} records
-        </div>
-        <div class="flex justify-end">
-            <div class="ppp m-4 p-2 rounded">
-                <label>Parts Per Page:</label>
-                <select v-model="limit" @change="changeLimit" class="rounded-full p-2">
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                </select>
+            <!-- Pagination Controls and Limit Selection -->
+            <div id="pagination" class="flex justify-center items-center gap-2 mt-4">
+                <button @click="goToPage(page - 1)" :disabled="page === 1"><i class="fa-solid fa-arrow-left"></i></button>
+                <button v-for="p in paginationRange" :key="p" @click="goToPage(p)" class="number" :class="[{ 'current': p === page }]">
+                    {{ p }}
+                </button>
+                <button @click="goToPage(page + 1)" :disabled="page === totalPages"><i
+                        class="fa-solid fa-arrow-right"></i></button>
             </div>
+            <div id="pagination" class="flex justify-center items-center gap-2 mt-4">
+                <button @click="goToPage(1)" :disabled="page === 1"><i class="fa-solid fa-arrow-left-to-line"></i> First</button>
+                <button @click="goToPage(totalPages)" :disabled="page === totalPages">Last <i
+                        class="fa-solid fa-arrow-right-to-line"></i></button>
+            </div>
+            <div class="showing text-center">
+                Showing {{ page != 1 ? (page - 1) * limit : 1 }} to {{ limit * page > totalItems ? totalItems : limit * page }}
+                of
+                {{ totalItems }} records
+            </div>
+            <div class="flex justify-end">
+                <div class="ppp m-4 p-2 rounded">
+                    <label>Parts Per Page:</label>
+                    <select v-model="limit" @change="changeLimit" class="rounded-full p-2">
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div v-else>
+            <h3 style="text-align: center; padding: 50px">No parts match the specified criteria. Please try a different search.</h3>
         </div>
     </div>
 </template>
@@ -230,6 +235,7 @@ const paginationRange = computed(() => {
         background-color: #dc602e;
         font-size: 18px;
         line-height: 18px;
+        cursor: pointer;
 
         &.hide-on-mobile {
             @media screen and (max-width: 1023px) {
@@ -237,15 +243,22 @@ const paginationRange = computed(() => {
             }
         }
         &.current {
+            cursor: default;
             background-color: #fff;
             color: #dc602e;
             border: solid 2px #dc602e;
+            &:hover {
+                background-color: #fff;
+                color: #dc602e;
+                border: solid 2px #dc602e;
+            }
         }
 
         &:last-of-type {
             color: #fff;
             background-color: #dc602e;
             border: none;
+            cursor: pointer!important;
         }
 
         &:hover {

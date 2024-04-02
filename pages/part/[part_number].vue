@@ -7,17 +7,17 @@
     </Head>
   <div class="container mx-auto p-4" v-if="!pending && partDetails">
     <div class="text-right mb-4">
-      <button @click="goBack" class="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+      <button @click="goBack" class="button go-back">
         Back to List
       </button>
     </div>
     <div class="flex flex-wrap">
       <div class="w-full lg:w-1/2 p-2">
         <h2 class="text-2xl font-bold">{{ partTitle }}</h2>
-        <h3>{{ partDetails.manufacturer?.name }} — Part # {{ partDetails.part_number }}</h3>
-        <a :href="`https://www.multi-inc.com/request-a-quote-parts?part_numbers=${partDetails.part_number}`"
+        <h3>{{ partDetails.manufacturer?.name }} — Part # {{ getPartNumber(partDetails) }}</h3>
+        <a :href="`https://www.multi-inc.com/request-a-quote-parts?part_numbers=${getPartNumber(partDetails)}`"
           target="_blank"
-          class="inline-block bg-orange-500 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded my-2">
+          class="button request-quote">
           Request a Quote
         </a>
         <div v-html="partContent" class="product-content mt-4"></div>
@@ -132,6 +132,28 @@ hr,
 
 .title {
   text-transform: uppercase;
+}
+
+.button {
+    border-radius: 50px;
+    padding: 10px 15px;
+    color: #fff;
+    white-space: nowrap;
+    transition: all .3s ease;
+    &.go-back {
+      background-color: #2275b5;
+      border: solid 2px #2275b5;
+      &:hover {
+        color: #2275b5;
+        background-color: #fff;
+      }
+    }
+    &.request-quote {
+      background-color: #dc602e;
+      &:hover {
+        background-color: #2275b5;
+      }
+    }
 }
 </style>
 
