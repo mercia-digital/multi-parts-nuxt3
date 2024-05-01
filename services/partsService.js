@@ -44,7 +44,7 @@ export const usePartsService = () => {
   };
 
   const fetchPartDetails = async (partNumber) => {
-    const response = await $fetch(`https://order.multi-inc.com/items/parts/${partNumber}?fields=part_number,display_part_number,content,title,primary_image,gallery.*.*,manufacturer.*`);
+    const response = await $fetch(`https://order.multi-inc.com/items/parts/${partNumber}?fields=part_number,display_part_number,content,title,primary_image,gallery.*.*,manufacturer.*,modalities.*.name,condition,warranty,returnable`);
     
     // Check if 'content' is null and replace it with an empty string if so
     if (response.data.content == null) {
@@ -59,6 +59,13 @@ export const usePartsService = () => {
         src: `https://order.multi-inc.com/assets/${response.data.primary_image}?fit=inside&width=600&height=600`,
         alt: response.data.title
       });
+    } else {
+      const settings = await $fetch(`https://order.multi-inc.com/items/application_settings?fields=default_image`);
+      images.push({
+        id: settings.data.default_image,
+        src: `https://order.multi-inc.com/assets/${settings.data.default_image}?fit=inside&width=600&height=600`
+      });
+      response.data.primary_image = settings.data.default_image;
     }
 
     // Process gallery images and append to images array

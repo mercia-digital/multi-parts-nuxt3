@@ -12,15 +12,23 @@
       </button>
     </div>
     <div class="flex flex-wrap">
-      <div class="w-full lg:w-1/2 p-2">
-        <h2 class="text-2xl font-bold">{{ partTitle }}</h2>
-        <h3>{{ partDetails.manufacturer?.name }} — Part # {{ getPartNumber(partDetails) }}</h3>
+      <div class="w-full lg:w-1/2 p-2 text-left">
+        <h1 class="text-2xl font-bold">{{ partTitle }}</h1>
+        <h2>{{ partDetails.manufacturer?.name }} — Part # {{ getPartNumber(partDetails) }}</h2>
         <a :href="`https://www.multi-inc.com/request-a-quote-parts?part_numbers=${getPartNumber(partDetails)}`"
           target="_blank"
           class="button request-quote">
           Request a Quote
         </a>
-        <div v-html="partContent" class="product-content mt-4"></div>
+        <hr>
+        <h4 v-if="partDetails.manufacturer?.name">Manufacturer: {{ partDetails.manufacturer?.name }}</h4>
+        <h4>Part Number: {{ getPartNumber(partDetails) }}</h4>
+        <h4 v-if="partDetails.modalities">Modality: <span v-for="mod in partDetails.modalities" class="modality">{{ mod.modalities_id.name }}</span></h4>
+        <!-- <h4 v-if="partDetails.condition">Condition: {{ partDetails.condition }}</h4>
+        <h4 v-if="partDetails.warranty">Warranty: {{ partDetails.warranty }}</h4>
+        <h4 v-if="returnableText !== null">Returnable: {{ returnableText }}</h4> -->
+        <hr>
+        <div v-html="partContent" class="product-content"></div>
       </div>
       <div class="w-full lg:w-1/2 p-2">
         <div v-if="partDetails.primary_image">
@@ -89,22 +97,34 @@ const partManufacturer = computed(() => (typeof partDetails.value.manufacturer?.
 
 const metaTitle = computed(() => `${getPartNumber(partDetails.value)}${partManufacturer.value ? ' - '+ partManufacturer.value : ''} - ${partTitle.value}` );
 const metaDescription = computed(() => `Part #: ${getPartNumber(partDetails.value)}${partManufacturer.value ? ' by '+ partManufacturer.value : ''} -- ${partTitle.value} -- High-quality parts for Healthcare Technology Management.` );
+
+const returnableText = computed(() => (partDetails.value?.returnable === null ? null : (partDetails.value.returnable ? 'Yes' : 'No')))
 </script>
 
 <style lang="less" scoped>
 h1 {
   color: #2275b5;
-  font-size: 33px;
+  font-size: 32px;
   line-height: 38px;
   font-weight: 500;
-  margin-bottom: 25px;
+  margin-bottom: 10px;
 }
 h2 {
   color: #304d6d;
   font-size: 38px;
   line-height: 46px;
   font-weight: 600;
-  margin-bottom: 25px;
+  margin-bottom: 50px;
+}
+.modality {
+  &:after {
+    content: ', ';
+  }
+  &:last-of-type {
+    &::after {
+      content: '';
+    }
+  }
 }
 hr,
 .product-content:deep(hr) {
@@ -150,6 +170,8 @@ hr,
     }
     &.request-quote {
       background-color: #dc602e;
+      margin-bottom: 10px;
+      display: inline-block;
       &:hover {
         background-color: #2275b5;
       }
