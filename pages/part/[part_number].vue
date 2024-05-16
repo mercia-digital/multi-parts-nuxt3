@@ -23,12 +23,20 @@
         <hr>
         <h4 v-if="partDetails.manufacturer?.name">Manufacturer: {{ partDetails.manufacturer?.name }}</h4>
         <h4>Part Number: {{ getPartNumber(partDetails) }}</h4>
-        <h4 v-if="partDetails.modalities">Modality: <span v-for="mod in partDetails.modalities" class="modality">{{ mod.modalities_id.name }}</span></h4>
+        <h4 v-if="partDetails.modalities.length">Modality: <span v-for="mod in partDetails.modalities" class="modality">{{ mod.modalities_id.name }}</span></h4>
         <!-- <h4 v-if="partDetails.condition">Condition: {{ partDetails.condition }}</h4>
         <h4 v-if="partDetails.warranty">Warranty: {{ partDetails.warranty }}</h4>
         <h4 v-if="returnableText !== null">Returnable: {{ returnableText }}</h4> -->
         <hr>
         <div v-html="partContent" class="product-content"></div>
+        <div class="other-attributes" v-if="partDetails.attributes">
+          <h4>Other Attributes</h4>
+          <ul>
+            <li v-for="(item, index) in partDetails.attributes" :key="index">
+              {{ item.name }}: <em>{{ item.value }}</em>
+            </li>
+          </ul>
+        </div>
       </div>
       <div class="w-full lg:w-1/2 p-2">
         <div v-if="partDetails.primary_image">

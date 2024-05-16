@@ -44,7 +44,7 @@ export const usePartsService = () => {
   };
 
   const fetchPartDetails = async (partNumber) => {
-    const response = await $fetch(`https://order.multi-inc.com/items/parts/${partNumber}?fields=part_number,display_part_number,content,title,primary_image,gallery.*.*,manufacturer.*,modalities.*.name,condition,warranty,returnable`);
+    const response = await $fetch(`https://order.multi-inc.com/items/parts/${partNumber}?fields=part_number,display_part_number,content,title,primary_image,gallery.*.*,manufacturer.*,modalities.*.name,condition,warranty,returnable,attributes`);
     
     // Check if 'content' is null and replace it with an empty string if so
     if (response.data.content == null) {
