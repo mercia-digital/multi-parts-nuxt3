@@ -54,18 +54,22 @@ export const usePartsService = () => {
     // Process primary image
     let images = [];
     if (response.data.primary_image) {
-      images.push({
+      let primary = {
         id: response.data.primary_image,
         src: `https://order.multi-inc.com/assets/${response.data.primary_image}?fit=inside&width=600&height=600`,
         alt: response.data.title
-      });
+      };
+      images.push(primary);
+      response.data.primary_image = primary;
     } else {
       const settings = await $fetch(`https://order.multi-inc.com/items/application_settings?fields=default_image`);
-      images.push({
+      let default_image = {
         id: settings.data.default_image,
-        src: `https://order.multi-inc.com/assets/${settings.data.default_image}?fit=inside&width=600&height=600`
-      });
-      response.data.primary_image = settings.data.default_image;
+        src: `https://order.multi-inc.com/assets/${settings.data.default_image}?fit=inside&width=600&height=600`,
+        alt: "MULTI, INC. Logo"
+      };
+      images.push(default_image);
+      response.data.primary_image = default_image;
     }
 
     // Process gallery images and append to images array
