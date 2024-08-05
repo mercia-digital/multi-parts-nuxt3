@@ -21,16 +21,21 @@
         <h2 v-if="partDetails.manufacturer?.name">Manufacturer: <span class="meta-value">{{ partDetails.manufacturer?.name }}</span></h2>
         <h2>Part Number: <span class="meta-value">{{ getPartNumber(partDetails) }}</span></h2>
         <h3 v-if="partDetails.modalities.length">Modality: <span class="meta-value"><span v-for="mod in partDetails.modalities" class="modality">{{ mod.modalities_id.name }}</span></span></h3>
-        <!-- <h4 v-if="partDetails.condition">Condition: {{ partDetails.condition }}</h4>
-        <h4 v-if="partDetails.warranty">Warranty: {{ partDetails.warranty }}</h4>
-        <h4 v-if="returnableText !== null">Returnable: {{ returnableText }}</h4> -->
         <hr>
-        <div class="flex justify-center">
-          <a :href="`https://www.multi-inc.com/request-a-quote-parts?part_numbers=${getPartNumber(partDetails)}`"
+        <div>
+          <ul>
+            <li v-if="partDetails.condition"><h3>Condition: <span class="meta-value" style="text-transform: capitalize;">{{ partDetails.condition }}</span></h3></li>
+            <li v-else><h3>Condition: <span class="meta-value">New</span></h3></li>
+            <li v-if="partDetails.warranty"><h3>Warranty: <span class="meta-value">{{ partDetails.warranty }}</span></h3></li>
+            <li v-if="returnableText !== null"><h3>Returnable: <span class="meta-value">{{ returnableText }}</span></h3></li>
+            <li><h3>OEM Quality Assurance: <span class="meta-value">Passed</span></h3></li>
+            <li><h3>Lead Times: <span class="meta-value">Most parts shipped from inventory on the same day.</span></h3></li>            
+            <li><h3 style="display: inline-block">Accurate Pricing:</h3> <a :href="`https://www.multi-inc.com/request-a-quote-parts?part_numbers=${getPartNumber(partDetails)}`"
             target="_blank"
             class="button request-quote">
             Request a Quote
-          </a>
+          </a></li>
+          </ul>
         </div>
         <hr>        
         <div v-html="partContent" class="product-content"></div>
@@ -119,6 +124,12 @@ const returnableText = computed(() => (partDetails.value?.returnable === null ? 
 </script>
 
 <style lang="less" scoped>
+ul {
+  padding: 0;
+  li {
+    margin-left: 0;
+  }
+}
 h1 {
   color: #304d6d;
   font-size: 38px;
