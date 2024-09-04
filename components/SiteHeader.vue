@@ -411,8 +411,8 @@
     <li class="hs-menu-item hs-menu-depth-3" role="none"><a href="https://parts.multi-inc.com/search/term/Biomedical" role="menuitem">PCS/Biomedical/<br>Consumable</a></li>
    </ul></li><li class="hs-menu-item hs-menu-depth-2 hs-item-has-children" role="none"><a href="javascript:;" role="menuitem"><span class="category">Other</span></a>
    <ul role="menu" class="hs-menu-children-wrapper">
-    <li class="hs-menu-item hs-menu-depth-3" role="none"><a href="https://parts.multi-inc.com/search/manufacturer/Batteries" role="menuitem">Batteries</a></li>
-    <li class="hs-menu-item hs-menu-depth-3" role="none"><a href="https://parts.multi-inc.com/search/manufacturer/Bulbs" role="menuitem">Bulbs</a></li>
+    <li class="hs-menu-item hs-menu-depth-3" role="none"><a href="https://parts.multi-inc.com/search/modality/Batteries" role="menuitem">Batteries</a></li>
+    <li class="hs-menu-item hs-menu-depth-3" role="none"><a href="https://parts.multi-inc.com/search/modality/Bulbs" role="menuitem">Bulbs</a></li>
    </ul></li></div>
   
  </ul></li>
