@@ -301,7 +301,7 @@
     
 
 <li class="no-submenu menu-item hs-skip-lang-url-rewrite">
-  <a href="https://parts.multi-inc.com/search/manufacturer/Batteries" class="menu-link">Batteries</a>
+  <a href="https://parts.multi-inc.com/search/modality/Batteries" class="menu-link">Batteries</a>
 
   
 </li>
@@ -311,7 +311,7 @@
     
 
 <li class="no-submenu menu-item hs-skip-lang-url-rewrite">
-  <a href="https://parts.multi-inc.com/search/manufacturer/Bulbs" class="menu-link">Bulbs</a>
+  <a href="https://parts.multi-inc.com/search/modality/Bulbs" class="menu-link">Bulbs</a>
 
   
 </li>
