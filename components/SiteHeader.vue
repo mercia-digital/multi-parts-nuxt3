@@ -144,7 +144,7 @@
   
     
 
-<li class="no-submenu menu-item hs-skip-lang-url-rewrite">
+<li class="no-submenu menu-item hs-skip-lang-url-rewrite" style="display: block">
   <a href="https://parts.multi-inc.com/search/manufacturer/GE%20Healthcare" class="menu-link">GE HealthCare</a>
 
   
