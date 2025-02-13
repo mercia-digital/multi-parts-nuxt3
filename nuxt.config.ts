@@ -28,7 +28,7 @@ export default defineNuxtConfig({
       const axios = require('axios');
       const queryParams = new URLSearchParams({
         sort: '-sort,part_number',
-        'fields[]': ['part_number', 'date_updated'],
+        'fields[]': ['part_number', 'primary_image.filename_download','primary_image.title','primary_image.description','manufacturer.name'],
         limit: -1
       });
       const queryString = queryParams.toString();
@@ -40,13 +40,23 @@ export default defineNuxtConfig({
       const urls = [];
       for (const part of response.data.data) {
         if (part.part_number) {
-          urls.push({
+          const urlObj: any = {
             url: `/part/${part.part_number}`,
             lastmod: _lastmod,
-            //changefreq: 'weekly',
-            //priority: 0.8,
-          });
-        }
+            changefreq: 'daily',
+            priority: part.primary_image ? 1.0 : 0.8,
+          };
+  
+          if (part.primary_image && part.primary_image.filename_download) {
+            urlObj.image = {
+              loc: `https://order.multi-inc.com/assets/${part.primary_image.filename_download}`,
+              title: part.primary_image.title || `Part ${part.part_number} - ${part.manufacturer?.name || ''}`,
+              caption: part.primary_image.description || `Part ${part.part_number} - ${part.manufacturer?.name || ''}`,
+            };
+          }
+  
+          urls.push(urlObj);
+        }      
       }
       return urls;
     },
