@@ -4,7 +4,7 @@ export const usePartsService = () => {
     const queryParams = new URLSearchParams({
       sort: '-sort,part_number',
       meta: 'filter_count,total_count',
-      'fields[]': ['part_number', 'display_part_number', 'manufacturer.*', 'title', 'primary_image.*'],
+      'fields[]': ['part_number', 'display_part_number', 'manufacturer.*', 'manufacturer.logo.*', 'title', 'primary_image.*'],
       limit: limit.toString(),
       page: page.toString(),
     });
@@ -18,7 +18,12 @@ export const usePartsService = () => {
   
     // Add manufacturer filter if provided
     if (manufacturer && manufacturer.trim()) {
-      filters._and.push({ "manufacturer" : { "name" : { _eq: manufacturer }} });
+      // Use the exact filter structure that works with Directus
+      filters._and.push({ 
+        _and: [
+          { manufacturer: { name: { _eq: manufacturer } } }
+        ]
+      });
     }
   
     // Add modality filter if provided
@@ -37,14 +42,14 @@ export const usePartsService = () => {
     }
   
     const queryString = queryParams.toString();
+    
     const { data, error } = await useFetch(`https://order.multi-inc.com/items/parts?${queryString}`);
-    //const { data, error } = await useFetch(`http://localhost:8055/items/parts?${queryString}`);
-  
+    
     return { data, error };
   };
 
   const fetchPartDetails = async (partNumber) => {
-    const response = await $fetch(`https://order.multi-inc.com/items/parts/${partNumber}?fields=part_number,display_part_number,content,title,primary_image,gallery.*.*,manufacturer.*,modalities.*.name,condition,warranty,returnable,attributes`);
+    const response = await $fetch(`https://order.multi-inc.com/items/parts/${partNumber}?fields=part_number,display_part_number,content,title,primary_image,gallery.*.*,manufacturer.*,manufacturer.logo.*,modalities.*.name,condition,warranty,returnable,attributes`);
     
     // Check if 'content' is null and replace it with an empty string if so
     if (response.data.content == null) {
@@ -86,5 +91,74 @@ export const usePartsService = () => {
     return response.data;
   };
 
-  return { fetchParts, fetchPartDetails };
+  // Get manufacturer by slug
+  const getManufacturerBySlug = async (slug) => {
+    try {
+      const response = await $fetch(`https://order.multi-inc.com/items/manufacturers?filter[slug][_eq]=${slug}&fields=id,name,slug,description,logo.*`);
+      
+      if (response.data && response.data.length > 0) {
+        return response.data[0];
+      }
+      
+      return null;
+    } catch (error) {
+      console.error('Error fetching manufacturer by slug:', error);
+      return null;
+    }
+  };
+
+  // New method to get parts by manufacturer ID
+  const getPartsByManufacturer = async (manufacturerId) => {
+    try {
+      // First get the manufacturer name using the ID
+      const manufacturerResponse = await $fetch(`https://order.multi-inc.com/items/manufacturers/${manufacturerId}?fields=name`);
+      
+      if (!manufacturerResponse.data || !manufacturerResponse.data.name) {
+        return [];
+      }
+      
+      const manufacturerName = manufacturerResponse.data.name;
+      
+      // Query parts using the manufacturer name with the exact filter structure from Postman
+      const queryParams = new URLSearchParams({
+        sort: '-sort,part_number',
+        meta: 'filter_count,total_count',
+        'fields[]': ['part_number', 'display_part_number', 'title', 'primary_image.*', 'manufacturer.*', 'manufacturer.logo.*'],
+        limit: '20',
+        page: '1',
+        'filter[manufacturer][name][_eq]': manufacturerName
+      });
+      
+      const queryString = queryParams.toString();
+      
+      const response = await $fetch(`https://order.multi-inc.com/items/parts?${queryString}`);
+      
+      if (response.data) {
+        // Process primary images
+        return response.data.map(part => {
+          if (part.primary_image) {
+            part.primary_image = {
+              id: part.primary_image,
+              src: `https://order.multi-inc.com/assets/${part.primary_image}?fit=inside&width=300&height=300`,
+              alt: part.title || 'Part Image'
+            };
+          }
+          return part;
+        });
+      }
+      
+      return [];
+    } catch (error) {
+      console.error('Error fetching parts by manufacturer:', error);
+      return [];
+    }
+  };
+
+  return { fetchParts, fetchPartDetails, getManufacturerBySlug, getPartsByManufacturer };
+};
+
+// Helper function to get manufacturer logo URL without size constraints
+export const getManufacturerLogoUrl = (logo) => {
+  if (!logo) return '';
+  return `https://order.multi-inc.com/assets/${logo.id}`;
 };

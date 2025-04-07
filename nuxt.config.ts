@@ -6,18 +6,21 @@ export default defineNuxtConfig({
       enabled: true,
     },
   },
+
   modules: [
     '@nuxtjs/tailwindcss',
     'vue3-carousel-nuxt',
     '@nuxtjs/seo',
     '@nuxtjs/sitemap'
   ],
+
   site: {
-    //url: 'https://parts.multi-inc.com',
+    url: 'https://parts.multi-inc.com',
     name: 'MULTI, INC. Parts Catalog',
     description: 'MULTI, INC. exists to provide access to authentic parts, services, and technology through our OEM allegiant relationships. Explore our vast parts catalog.',
     defaultLocale: 'en', // not needed if you have @nuxtjs/i18n installed
   },
+
   sitemap: {
     sitemaps: true,
     xsl: false,
@@ -61,24 +64,24 @@ export default defineNuxtConfig({
       return urls;
     },
   },
+
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
     head: {
-      title: 'My Nuxt Project',
+      titleTemplate: '%s | MULTI, INC. Parts Catalog',
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        {
-          hid: 'google-site-verification',
-          name: 'google-site-verification',
-          content: 'RTo4vA1tJKoUSDzXeiu-tVWH2_K2PwVScCdZoqQyl7A',
-        },
+        { name: 'format-detection', content: 'telephone=no' },
+        { name: 'robots', content: 'index, follow' },
+        { name: 'google-site-verification', content: 'RTo4vA1tJKoUSDzXeiu-tVWH2_K2PwVScCdZoqQyl7A' },
+        { property: 'og:site_name', content: 'MULTI, INC. Parts Catalog' },
+        { property: 'og:type', content: 'website' },
+        { name: 'twitter:card', content: 'summary_large_image' },
       ],
       link: [
-        {
-          rel: 'icon',
-          href: '/multi_favicon.webp'
-        }
+        { rel: 'icon', type: 'image/webp', href: '/multi_favicon.webp' },
+        { rel: 'canonical', href: 'https://parts.multi-inc.com' }
       ],
       script: [
         {
@@ -122,5 +125,7 @@ export default defineNuxtConfig({
       __dangerouslyDisableSanitizers: ['script'],
       // Add other head properties as needed
     },
-  }
+  },
+
+  compatibilityDate: '2025-04-07'
 })
