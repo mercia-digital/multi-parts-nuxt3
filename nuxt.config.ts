@@ -14,6 +14,14 @@ export default defineNuxtConfig({
     '@nuxtjs/sitemap'
   ],
 
+  css: [
+    // Load hs assets first
+    '~/assets/hs-css/main.min.css',
+    '~/assets/hs-css/theme-overrides.min.css',
+    // Then load our global styles to override when needed
+    '~/assets/css/global.less'
+  ],
+
   site: {
     url: 'https://parts.multi-inc.com',
     name: 'MULTI, INC. Parts Catalog',

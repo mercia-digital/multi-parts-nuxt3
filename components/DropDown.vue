@@ -53,7 +53,7 @@ function closeAndClear() {
     selectedOption.value = null;
     searchTerm.value = '';
 
-    emit('optionSelected', selectedOption);
+    emit('optionSelected', { name: '' });
 }
 
 defineExpose({
@@ -61,7 +61,7 @@ defineExpose({
     selectedOption.value = null;
     searchTerm.value = '';
 
-    emit('optionSelected', selectedOption);
+    emit('optionSelected', { name: '' });
   }
 });
 

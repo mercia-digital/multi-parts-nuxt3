@@ -6,26 +6,26 @@ const props = defineProps({
 })
 </script>
 <style lang="less">
-#site-main {
-  max-width: 1400px;
-  margin: 50px auto;
-  text-align: center;
-}
-.button {
-    border-radius: 50px;
-    padding: 10px 15px;
-    color: #fff;
-    white-space: nowrap;
-    transition: all .3s ease;
-    background-color: #dc602e;
-    &:hover {
-      background-color: #2275b5;
-    }
-}
-pre {
-    text-align: left;
-    display: none;
-}
+// #site-main {
+//   max-width: 1400px;
+//   margin: 50px auto;
+//   text-align: center;
+// }
+// .button {
+//     border-radius: 50px;
+//     padding: 10px 15px;
+//     color: #fff;
+//     white-space: nowrap;
+//     transition: all .3s ease;
+//     background-color: #dc602e;
+//     &:hover {
+//       background-color: #2275b5;
+//     }
+// }
+// pre {
+//     text-align: left;
+//     display: none;
+// }
 </style>
 
 <template>

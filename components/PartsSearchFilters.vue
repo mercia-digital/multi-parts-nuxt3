@@ -11,7 +11,7 @@
     </div>
     <div class="clear-search-wrapper w-2/12">
       <div class="clear-search">
-        <a href="/" class="block button text-center transition-all duration-300">Clear Filters</a>
+        <a href="/parts" class="block button text-center transition-all duration-300">Clear Filters</a>
       </div>
     </div>
     <div class="w-full lg:w-5/12 flex-grow">

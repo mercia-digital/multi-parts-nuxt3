@@ -1,5 +1,8 @@
 <template>
     <div class="p-4">
+        <!-- Breadcrumbs -->
+        <Breadcrumbs :items="breadcrumbItems" class="mb-4" />
+        
         <PartsSearchFilters 
             ref="searchFilters"
             :initial-search-term="route.query.term || ''"
@@ -156,6 +159,11 @@ const totalItems = computed(() => partsData.value.totalItems);
 const page = ref(initialPage);
 const limit = ref(initialLimit);
 
+// Create reactive variables for filters
+const searchTerm = ref(initialTerm);
+const selectedManufacturer = ref(initialManufacturer);
+const selectedModality = ref(initialModality);
+
 // Function to update the URL parameters based on the current state
 const updateUrl = () => {
   const queryParams = { ...route.query };
@@ -172,18 +180,63 @@ const updateUrl = () => {
     delete queryParams.limit;
   }
 
+  if (searchTerm.value) {
+    queryParams.term = searchTerm.value;
+  } else {
+    delete queryParams.term;
+  }
+
+  if (selectedManufacturer.value) {
+    queryParams.manufacturer = selectedManufacturer.value;
+  } else {
+    delete queryParams.manufacturer;
+  }
+
+  if (selectedModality.value) {
+    queryParams.modality = selectedModality.value;
+  } else {
+    delete queryParams.modality;
+  }
+
   router.push({ path: '/parts', query: queryParams });
+};
+
+// Function to fetch parts data
+const fetchParts = async () => {
+  try {
+    const { data, error } = await usePartsService().fetchParts({
+      page: page.value,
+      limit: limit.value,
+      term: searchTerm.value,
+      manufacturer: selectedManufacturer.value,
+      modality: selectedModality.value
+    });
+
+    if (error.value) {
+      console.error("Failed to fetch parts:", error.value);
+      return;
+    }
+
+    partsData.value = {
+      parts: data.value?.data || [],
+      totalItems: data.value?.meta?.filter_count || 0
+    };
+  } catch (err) {
+    console.error("Error fetching parts:", err);
+  }
 };
 
 const goToPage = (newPage) => {
   if (newPage < 1 || newPage > totalPages.value || newPage === page.value) return;
   page.value = newPage;
-  refresh();
+  updateUrl();
+  fetchParts();
 };
 
 const changeLimit = (event) => {
   limit.value = parseInt(event.target.value);
-  refresh();
+  updateUrl();
+  fetchParts();
 };
 
 const getImageUrl = (image) => {
@@ -197,14 +250,30 @@ const getPartNumber = (part) => {
 
 // Handle search from the component
 const handleSearch = (filters) => {
-  page.value = 1; // Reset to first page when searching
-  refresh();
+  // Reset to first page when searching
+  page.value = 1;
+  
+  // Update the filter values
+  searchTerm.value = filters.term || '';
+  selectedManufacturer.value = filters.manufacturer || '';
+  selectedModality.value = filters.modality || '';
+  
+  // Update URL and fetch data
+  updateUrl();
+  fetchParts();
 };
 
 // Handle clear from the component
 const handleClear = () => {
-  page.value = 1; // Reset to first page when clearing
-  refresh();
+  // Reset all filters
+  page.value = 1;
+  searchTerm.value = '';
+  selectedManufacturer.value = '';
+  selectedModality.value = '';
+  
+  // Update URL and fetch data
+  updateUrl();
+  fetchParts();
 };
 
 const totalPages = computed(() => Math.ceil(totalItems.value / limit.value));
@@ -219,6 +288,14 @@ const paginationRange = computed(() => {
     start = Math.max(end - totalDisplayed + 1, 1);
   }
   return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+});
+
+// Breadcrumb items
+const breadcrumbItems = computed(() => {
+  return [
+    { name: 'Home', path: '/' },
+    { name: 'Parts', path: '/parts' }
+  ];
 });
 </script>
 

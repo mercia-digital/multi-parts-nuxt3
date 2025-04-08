@@ -1,0 +1,110 @@
+/* 
+ * MULTI, INC. Parts Catalog - Global Styles
+ * This file contains global styles, variables, and mixins for the entire site
+ * Designed to complement Tailwind CSS
+ */
+/* ===== Font Imports ===== */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: normal;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/roboto/v47/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWubEbWmT.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: normal;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/roboto/v47/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWuYjammT.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/lato/v24/S6uyw4BMUTPHvxk.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/lato/v24/S6u9w4BMUTPHh6UVew8.ttf) format('truetype');
+}
+/* ===== Variables ===== */
+body {
+  font-family: Lato, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  background-color: #fbfcff;
+  color: #1f1f1f;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #1f1f1f;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+h1,
+h2,
+h3 {
+  font-family: Roboto, sans-serif;
+  font-weight: bold;
+}
+h1 {
+  font-size: 3.052rem;
+  margin-bottom: 1rem;
+}
+@media screen and (max-width: 767px) {
+  h1 {
+    font-size: 2.441rem;
+  }
+}
+h2 {
+  font-size: 2.441rem;
+}
+@media screen and (max-width: 767px) {
+  h2 {
+    font-size: 1.953rem;
+  }
+}
+h3 {
+  font-size: 1.953rem;
+}
+@media screen and (max-width: 767px) {
+  h3 {
+    font-size: 1.5625rem;
+  }
+}
+h4,
+h5,
+h6 {
+  font-family: Lato, sans-serif;
+  font-weight: 400;
+}
+h4 {
+  font-size: 1.5625rem;
+}
+h5 {
+  font-size: 1.25rem;
+}
+h6 {
+  font-size: 1rem;
+}
+p {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  line-height: 1.75;
+}
+#site-main {
+  max-width: 1400px;
+  margin: 50px auto;
+}

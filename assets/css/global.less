@@ -1,0 +1,118 @@
+/* 
+ * MULTI, INC. Parts Catalog - Global Styles
+ * This file contains global styles, variables, and mixins for the entire site
+ * Designed to complement Tailwind CSS
+ */
+
+/* ===== Font Imports ===== */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+
+/* ===== Variables ===== */
+// Colors
+@primary-color: #304d6d;
+@secondary-color: #2275b5;
+@accent-color: #dc602e;
+@white: #fbfcff;
+@black: #1f1f1f;
+
+// Typography
+@font-family-base: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+@font-family-heading: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+// Font size scale - using a 1.25 ratio (major third) for a harmonious progression
+@font-size-xs: 0.75rem;    // 12px
+@font-size-sm: 0.875rem;   // 14px
+@font-size-base: 1rem;     // 16px
+@font-size-md: 1.25rem;    // 20px
+@font-size-lg: 1.5625rem;  // 25px
+@font-size-xl: 1.953rem;   // 31.25px
+@font-size-2xl: 2.441rem;  // 39.06px
+@font-size-3xl: 3.052rem;  // 48.83px
+
+// Line heights
+@line-height-tight: 1.2;
+@line-height-base: 1.5;
+@line-height-relaxed: 1.75;
+
+// Transitions
+@transition-base: all 0.3s ease;
+
+// Breakpoints
+@breakpoint-sm: 640px;
+@breakpoint-md: 768px;
+@breakpoint-lg: 1024px;
+@breakpoint-xl: 1280px;
+
+body {
+    font-family: Lato, sans-serif;
+    font-size: @font-size-base;
+    line-height: @line-height-base;
+    background-color: @white;
+    color: @black;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: @black;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    line-height: @line-height-tight;
+}
+
+h1, h2, h3 {
+    font-family: Roboto, sans-serif;
+    font-weight: bold;
+}
+
+h1 {
+    font-size: @font-size-3xl;
+    margin-bottom: 1rem;
+    
+    @media screen and (max-width: (@breakpoint-md - 1)) {
+        font-size: @font-size-2xl;
+    }
+}
+
+h2 {
+    font-size: @font-size-2xl;
+    
+    @media screen and (max-width: (@breakpoint-md - 1)) {
+        font-size: @font-size-xl;
+    }
+}
+
+h3 {
+    font-size: @font-size-xl;
+    
+    @media screen and (max-width: (@breakpoint-md - 1)) {
+        font-size: @font-size-lg;
+    }
+}
+
+h4, h5, h6 {
+    font-family: Lato, sans-serif;
+    font-weight: 400;
+}
+
+h4 {
+    font-size: @font-size-lg;
+}
+
+h5 {
+    font-size: @font-size-md;
+}
+
+h6 {
+    font-size: @font-size-base;
+}
+
+p {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    line-height: @line-height-relaxed;
+}
+
+#site-main {
+    max-width: 1400px;
+    margin: 50px auto;
+}
