@@ -38,7 +38,7 @@
                             class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_linked_image" style=""
                             data-hs-cos-general-type="widget" data-hs-cos-type="linked_image"><img
                               src="https://www.multi-inc.com/hubfs/footer-logo.png" class="hs-image-widget "
-                              style="max-width: 100%; height: auto;" alt="footer-logo" title="footer-logo"></span>
+                              style="max-width: 100%; height: auto;" alt="MULTI, INC. Logo" title="MULTI, INC. Logo"></span>
                         </div>
 
                       </div><!--end widget-span -->
@@ -63,7 +63,7 @@
                     </div><!--end row-->
                   </div><!--end row-wrapper -->
 
-                  <div class="row-fluid-wrapper row-depth-1 row-number-4 dnd-row">
+                  <div class="row-fluid-wrapper row-number-4 dnd-row">
                     <div class="row-fluid ">
                       <div class="span12 widget-span widget-type-custom_widget dnd-module" style=""
                         data-widget-type="custom_widget" data-x="0" data-w="12">

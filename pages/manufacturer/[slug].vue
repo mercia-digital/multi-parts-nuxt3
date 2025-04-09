@@ -166,15 +166,15 @@ const goBack = () => {
 
 // Set SEO meta tags
 useHead({
-  title: `${manufacturer.value?.name || 'Manufacturer'} | Multi Parts`,
+  title: `${manufacturer.value?.name || 'Manufacturer'} | MULTI, INC. Parts Catalog`,
   meta: [
     { name: 'description', content: manufacturer.value?.description ? he.decode(manufacturer.value.description).replace(/<[^>]*>/g, '').substring(0, 160) : 'Browse parts by this manufacturer.' },
-    { property: 'og:title', content: `${manufacturer.value?.name || 'Manufacturer'} | Multi Parts` },
+    { property: 'og:title', content: `${manufacturer.value?.name || 'Manufacturer'} | MULTI, INC. Parts Catalog` },
     { property: 'og:description', content: manufacturer.value?.description ? he.decode(manufacturer.value.description).replace(/<[^>]*>/g, '').substring(0, 160) : 'Browse parts by this manufacturer.' },
-    { name: 'canonical', content: `https://parts.nuxt3.multi/manufacturer/${route.params.slug}` }
+    { name: 'canonical', content: `https://parts.multi-inc.com/manufacturer/${route.params.slug}` }
   ],
   link: [
-    { rel: 'canonical', href: `https://parts.nuxt3.multi/manufacturer/${route.params.slug}` }
+    { rel: 'canonical', href: `https://parts.multi-inc.com/manufacturer/${route.params.slug}` }
   ],
   script: [
     {
@@ -195,7 +195,7 @@ useHead({
           '@type': 'ListItem',
           'position': index + 1,
           'name': item.name,
-          'item': `https://parts.nuxt3.multi${item.path}`
+          'item': `https://parts.multi-inc.com${item.path}`
         }))
       })
     }

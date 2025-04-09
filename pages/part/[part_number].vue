@@ -308,19 +308,19 @@ if (partError.value) {
   });
   
   useHead({
-    title: `${partDetails.value?.title || 'Part'} | Multi Parts`,
+    title: `${partDetails.value?.title || 'Part'} | MULTI, INC. Parts Catalog`,
     meta: [
-      { name: 'description', content: partDetails.value?.description || 'View detailed information about this Multi part.' },
-      { property: 'og:title', content: `${partDetails.value?.title || 'Part'} | Multi Parts` },
-      { property: 'og:description', content: partDetails.value?.description || 'View detailed information about this Multi part.' },
+      { name: 'description', content: partDetails.value?.description || 'View detailed information about this MULTI, INC. part.' },
+      { property: 'og:title', content: `${partDetails.value?.title || 'Part'} | MULTI, INC. Parts Catalog` },
+      { property: 'og:description', content: partDetails.value?.description || 'View detailed information about this MULTI, INC. part.' },
       { property: 'og:image', content: partDetails.value?.primary_image?.src || '' },
       { name: 'twitter:card', content: 'summary_large_image' },
-      { name: 'twitter:title', content: `${partDetails.value?.title || 'Part'} | Multi Parts` },
-      { name: 'twitter:description', content: partDetails.value?.description || 'View detailed information about this Multi part.' },
+      { name: 'twitter:title', content: `${partDetails.value?.title || 'Part'} | MULTI, INC. Parts Catalog` },
+      { name: 'twitter:description', content: partDetails.value?.description || 'View detailed information about this MULTI, INC. part.' },
       { name: 'twitter:image', content: partDetails.value?.primary_image?.src || '' }
     ],
     link: [
-      { rel: 'canonical', href: `https://parts.nuxt3.multi/part/${route.params.part_number}` }
+      { rel: 'canonical', href: `https://parts.multi-inc.com/part/${route.params.part_number}` }
     ],
     script: [
       {
@@ -330,11 +330,11 @@ if (partError.value) {
           '@type': 'Product',
           'name': partDetails.value?.title || 'Part',
           'image': partDetails.value?.primary_image?.src || '',
-          'description': partDetails.value?.description || 'View detailed information about this Multi part.',
+          'description': partDetails.value?.description || 'View detailed information about this MULTI, INC. part.',
           'sku': partDetails.value?.part_number || '',
           'brand': {
             '@type': 'Brand',
-            'name': 'Multi'
+            'name': partDetails.value?.manufacturer?.name || 'Unknown Manufacturer'
           },
           'offers': {
             '@type': 'Offer',
@@ -342,12 +342,13 @@ if (partError.value) {
               '@type': 'PriceSpecification',
               'price': '0',
               'priceCurrency': 'USD',
-              'valueAddedTaxIncluded': 'false'
+              'valueAddedTaxIncluded': 'false',
+              'description': 'Call for pricing'
             },
             'availability': 'https://schema.org/InStock',
             'seller': {
               '@type': 'Organization',
-              'name': 'Multi',
+              'name': 'MULTI, INC.',
               'url': 'https://multi-inc.com'
             }
           }
@@ -362,7 +363,7 @@ if (partError.value) {
             '@type': 'ListItem',
             'position': index + 1,
             'name': item.name || '',
-            'item': `https://parts.nuxt3.multi${item.path || ''}`
+            'item': `https://parts.multi-inc.com${item.path || ''}`
           })) : []
         })
       }

@@ -1,0 +1,26 @@
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /private/
+Disallow: /api/
+Disallow: /_nuxt/
+Disallow: /.nuxt/
+Disallow: /.output/
+
+# Crawl-delay for all bots
+Crawl-delay: 10
+
+# Specific rules for major search engines
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 5
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 5
+
+# Sitemap locations
+Sitemap: https://parts.multi-inc.com/sitemaps/index.xml 
