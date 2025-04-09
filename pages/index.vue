@@ -91,6 +91,40 @@ useHead({
     titleTemplate: '%siteName',
     link: [
         { rel: 'canonical', href: 'https://parts.multi-inc.com' }
+    ],
+    script: [
+        {
+            type: 'application/ld+json',
+            children: JSON.stringify({
+                '@context': 'https://schema.org',
+                '@type': 'WebSite',
+                name: 'MULTI, INC. Parts Catalog',
+                url: 'https://parts.multi-inc.com',
+                description: 'MULTI, INC. exists to provide access to authentic parts, services, and technology through our OEM allegiant relationships.',
+                potentialAction: {
+                    '@type': 'SearchAction',
+                    target: {
+                        '@type': 'EntryPoint',
+                        urlTemplate: 'https://parts.multi-inc.com/parts?term={search_term_string}'
+                    },
+                    'query-input': 'required name=search_term_string'
+                }
+            })
+        },
+        {
+            type: 'application/ld+json',
+            children: JSON.stringify({
+                '@context': 'https://schema.org',
+                '@type': 'Organization',
+                name: 'MULTI, INC.',
+                url: 'https://multi-inc.com',
+                logo: 'https://multi-inc.com/assets/multi-logo',
+                sameAs: [
+                    'https://www.linkedin.com/company/multi-inc',
+                    'https://www.facebook.com/multiinc'
+                ]
+            })
+        }
     ]
 });
 

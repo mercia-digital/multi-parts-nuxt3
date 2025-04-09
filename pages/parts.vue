@@ -240,8 +240,23 @@ const changeLimit = (event) => {
 };
 
 const getImageUrl = (image) => {
-  if (!image) return 'https://order.multi-inc.com/assets/56e3344c-a815-4804-9745-d9d05987ce6a?fit=inside&width=100&height=100';
-  return `https://order.multi-inc.com/assets/${image.id}?fit=inside&width=100&height=100`;
+  try {
+    if (!image) {
+      return 'https://order.multi-inc.com/assets/56e3344c-a815-4804-9745-d9d05987ce6a?fit=inside&width=100&height=100';
+    }
+    
+    // Handle both object and string ID forms
+    const imageId = typeof image === 'object' && image.id ? image.id : image;
+    if (!imageId) {
+      console.warn('Invalid image data structure:', image);
+      return 'https://order.multi-inc.com/assets/56e3344c-a815-4804-9745-d9d05987ce6a?fit=inside&width=100&height=100';
+    }
+    
+    return `https://order.multi-inc.com/assets/${imageId}?fit=inside&width=100&height=100`;
+  } catch (err) {
+    console.error('Error processing image URL:', err);
+    return 'https://order.multi-inc.com/assets/56e3344c-a815-4804-9745-d9d05987ce6a?fit=inside&width=100&height=100';
+  }
 }
 
 const getPartNumber = (part) => {

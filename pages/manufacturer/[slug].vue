@@ -106,10 +106,34 @@ const { data: manufacturer, pending, error } = await useAsyncData(
       // Get parts by this manufacturer
       const partsData = await partsService.getPartsByManufacturer(manufacturerData.id);
       
-      return {
+      // Transform and validate the data
+      const transformedData = {
         ...manufacturerData,
-        parts: partsData || []
+        parts: (partsData || []).map(part => {
+          // Ensure required fields exist
+          if (!part.part_number) {
+            console.warn('Part missing part_number:', part);
+          }
+          
+          // Transform image data
+          if (part.primary_image) {
+            part.primary_image = {
+              id: typeof part.primary_image === 'object' ? part.primary_image.id : part.primary_image,
+              src: `https://order.multi-inc.com/assets/${typeof part.primary_image === 'object' ? part.primary_image.id : part.primary_image}?fit=inside&width=100&height=100`,
+              alt: part.title || 'Part Image'
+            };
+          }
+          
+          // Ensure manufacturer data is properly structured
+          if (part.manufacturer && typeof part.manufacturer === 'string') {
+            part.manufacturer = { name: part.manufacturer };
+          }
+          
+          return part;
+        })
       };
+      
+      return transformedData;
     } catch (err) {
       console.error('Error fetching manufacturer:', err);
       throw err;
