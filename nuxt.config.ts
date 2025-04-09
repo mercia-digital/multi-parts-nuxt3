@@ -92,7 +92,5 @@ export default defineNuxtConfig({
       __dangerouslyDisableSanitizers: ['script'],
       // Add other head properties as needed
     },
-  },
-
-  compatibilityDate: '2025-04-07'
+  }
 })
