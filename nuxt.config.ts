@@ -10,8 +10,7 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/tailwindcss',
     'vue3-carousel-nuxt',
-    '@nuxtjs/seo',
-    '@nuxtjs/sitemap'
+    '@nuxtjs/seo'
   ],
 
   css: [
@@ -27,50 +26,6 @@ export default defineNuxtConfig({
     name: 'MULTI, INC. Parts Catalog',
     description: 'MULTI, INC. exists to provide access to authentic parts, services, and technology through our OEM allegiant relationships. Explore our vast parts catalog.',
     defaultLocale: 'en', // not needed if you have @nuxtjs/i18n installed
-  },
-
-  sitemap: {
-    sitemaps: true,
-    xsl: false,
-    cacheMaxAgeSeconds: 43200, //12 hrs
-    // modify the chunk size if you need
-    defaultSitemapsChunkSize: 10000, // default 1000
-    urls: async () => {
-      const axios = require('axios');
-      const queryParams = new URLSearchParams({
-        sort: '-sort,part_number',
-        'fields[]': ['part_number', 'primary_image.filename_disk','primary_image.title','primary_image.description','manufacturer.name'],
-        limit: -1
-      });
-      const queryString = queryParams.toString();
-
-      const response = await axios.get(`https://order.multi-inc.com/items/parts?${queryString}`);
-
-      const _lastmod = new Date().toISOString();
-
-      const urls = [];
-      for (const part of response.data.data) {
-        if (part.part_number) {
-          const urlObj: any = {
-            url: `/part/${part.part_number}`,
-            lastmod: _lastmod,
-            changefreq: 'daily',
-            priority: part.primary_image ? 1.0 : 0.8,
-          };
-  
-          if (part.primary_image && part.primary_image.filename_disk) {
-            urlObj.image = {
-              loc: `https://order.multi-inc.com/assets/${part.primary_image.filename_disk}`,
-              title: part.primary_image.title || `Part ${part.part_number} - ${part.manufacturer?.name || ''}`,
-              caption: part.primary_image.description || `Part ${part.part_number} - ${part.manufacturer?.name || ''}`,
-            };
-          }
-  
-          urls.push(urlObj);
-        }      
-      }
-      return urls;
-    },
   },
 
   app: {
@@ -89,7 +44,11 @@ export default defineNuxtConfig({
       ],
       link: [
         { rel: 'icon', type: 'image/webp', href: '/multi_favicon.webp' },
-        { rel: 'canonical', href: 'https://parts.multi-inc.com' }
+        { rel: 'canonical', href: 'https://parts.multi-inc.com' },
+        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: 'anonymous' },
+        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap' },
+        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap' }
       ],
       script: [
         {
