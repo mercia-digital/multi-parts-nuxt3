@@ -32,11 +32,35 @@ definePageMeta({
 
 const route = useRoute()
 const { slug } = route.params
+const partsService = usePartsService()
 
-// Fetch manufacturer and their parts from cached endpoint
-const { data: manufacturerData } = await useAsyncData(`manufacturer-${slug}`, () => 
-  $fetch(`/api/sitemap/manufacturers/${slug}`)
-)
+// Fetch manufacturer and their parts
+const { data: manufacturerData } = await useAsyncData(`manufacturer-${slug}`, async () => {
+  const manufacturer = await partsService.getManufacturerBySlug(slug)
+  if (!manufacturer) return null
+  
+  // Get all parts by this manufacturer without pagination
+  const partsResponse = await partsService.getPartsByManufacturer(manufacturer.id, 1, -1)
+  
+  // Transform and validate the data
+  const parts = (partsResponse.data || []).map(part => ({
+    part_number: part.part_number,
+    display_part_number: part.display_part_number,
+    title: part.title
+  }))
+
+  return {
+    manufacturer,
+    parts,
+    totalItems: partsResponse.meta?.filter_count || 0
+  }
+}, {
+  // Cache the response for 24 hours
+  key: `manufacturer-${slug}`,
+  cache: {
+    maxAge: 86400 // 24 hours in seconds
+  }
+})
 
 // Process the data
 const manufacturer = computed(() => manufacturerData.value?.manufacturer || {})

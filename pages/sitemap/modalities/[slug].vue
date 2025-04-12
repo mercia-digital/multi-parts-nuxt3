@@ -32,14 +32,34 @@ definePageMeta({
 
 const route = useRoute()
 const { slug } = route.params
+const partsService = usePartsService()
 
 // Compute the modality name once
 const modalityName = computed(() => decodeURIComponent(slug))
 
-// Fetch parts for the modality from cached endpoint
-const { data: modalityData } = await useAsyncData(`modality-${slug}`, () => 
-  $fetch(`/api/sitemap/modalities/${slug}`)
-)
+// Fetch parts for the modality
+const { data: modalityData } = await useAsyncData(`modality-${slug}`, async () => {
+  // Get all parts for this modality without pagination
+  const partsResponse = await partsService.getPartsByModality(modalityName.value, 1, -1)
+  
+  // Transform and validate the data
+  const parts = (partsResponse.data || []).map(part => ({
+    part_number: part.part_number,
+    display_part_number: part.display_part_number,
+    title: part.title
+  }))
+
+  return {
+    parts,
+    totalItems: partsResponse.meta?.filter_count || 0
+  }
+}, {
+  // Cache the response for 24 hours
+  key: `modality-${slug}`,
+  cache: {
+    maxAge: 86400 // 24 hours in seconds
+  }
+})
 
 // Process the data
 const parts = computed(() => modalityData.value?.parts || [])
