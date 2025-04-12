@@ -8,20 +8,14 @@
 
     <h1 class="text-3xl font-bold mb-8">{{ manufacturer.name }} Parts Sitemap</h1>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div v-for="part in parts" :key="part.part_number" class="bg-white p-4 rounded-lg shadow">
-        <h2 class="text-xl font-semibold mb-2">
-          <NuxtLink 
+    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div v-for="part in parts" :key="part.part_number" class="p-4">
+        <NuxtLink 
             :to="`/part/${part.part_number}`"
-            class="text-blue-600 hover:underline"
+            class="hover:underline"
           >
-            {{ part.title }}
+            {{ part.title }} -- {{ getPartNumber(part) }}
           </NuxtLink>
-        </h2>
-        <p class="text-gray-600">{{ part.description }}</p>
-        <div class="mt-2">
-          <span class="text-sm text-gray-500">Part #: {{ getPartNumber(part) }}</span>
-        </div>
       </div>
     </div>
   </div>
@@ -30,6 +24,11 @@
 <script setup>
 import { usePartsService } from '~/services/partsService';
 import { computed } from 'vue';
+
+// Disable default layout to exclude header and footer
+definePageMeta({
+  layout: false
+})
 
 const route = useRoute()
 const { slug } = route.params
@@ -72,6 +71,12 @@ const { data: manufacturerData } = await useAsyncData(`manufacturer-${slug}`, as
   };
   
   return transformedData;
+}, {
+  // Cache the response for 24 hours
+  key: `manufacturer-${slug}`,
+  cache: {
+    maxAge: 86400 // 24 hours in seconds
+  }
 })
 
 // Process the data
