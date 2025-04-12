@@ -32,51 +32,14 @@ definePageMeta({
 
 const route = useRoute()
 const { slug } = route.params
-const partsService = usePartsService()
 
 // Compute the modality name once
 const modalityName = computed(() => decodeURIComponent(slug))
 
-// Fetch parts for the modality with caching
-const { data: modalityData } = await useAsyncData(`modality-${slug}`, async () => {
-  // Get all parts for this modality without pagination
-  const partsResponse = await partsService.getPartsByModality(modalityName.value, 1, -1)
-  
-  // Transform and validate the data
-  const transformedData = {
-    parts: (partsResponse.data || []).map(part => {
-      // Ensure required fields exist
-      if (!part.part_number) {
-        console.warn('Part missing part_number:', part);
-      }
-      
-      // Transform image data
-      if (part.primary_image) {
-        part.primary_image = {
-          id: typeof part.primary_image === 'object' ? part.primary_image.id : part.primary_image,
-          src: `https://order.multi-inc.com/assets/${typeof part.primary_image === 'object' ? part.primary_image.id : part.primary_image}?fit=inside&width=100&height=100`,
-          alt: part.title || 'Part Image'
-        };
-      }
-      
-      // Ensure manufacturer data is properly structured
-      if (part.manufacturer && typeof part.manufacturer === 'string') {
-        part.manufacturer = { name: part.manufacturer };
-      }
-      
-      return part;
-    }),
-    totalItems: partsResponse.meta?.filter_count || 0
-  };
-  
-  return transformedData;
-}, {
-  // Cache the response for 24 hours
-  key: `modality-${slug}`,
-  cache: {
-    maxAge: 86400 // 24 hours in seconds
-  }
-})
+// Fetch parts for the modality from cached endpoint
+const { data: modalityData } = await useAsyncData(`modality-${slug}`, () => 
+  $fetch(`/api/sitemap/modalities/${slug}`)
+)
 
 // Process the data
 const parts = computed(() => modalityData.value?.parts || [])

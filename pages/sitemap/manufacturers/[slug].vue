@@ -32,52 +32,11 @@ definePageMeta({
 
 const route = useRoute()
 const { slug } = route.params
-const partsService = usePartsService()
 
-// Fetch manufacturer and their parts with caching
-const { data: manufacturerData } = await useAsyncData(`manufacturer-${slug}`, async () => {
-  const manufacturer = await partsService.getManufacturerBySlug(slug)
-  if (!manufacturer) return null
-  
-  // Get all parts by this manufacturer without pagination
-  const partsResponse = await partsService.getPartsByManufacturer(manufacturer.id, 1, -1)
-  
-  // Transform and validate the data
-  const transformedData = {
-    manufacturer,
-    parts: (partsResponse.data || []).map(part => {
-      // Ensure required fields exist
-      if (!part.part_number) {
-        console.warn('Part missing part_number:', part);
-      }
-      
-      // Transform image data
-      if (part.primary_image) {
-        part.primary_image = {
-          id: typeof part.primary_image === 'object' ? part.primary_image.id : part.primary_image,
-          src: `https://order.multi-inc.com/assets/${typeof part.primary_image === 'object' ? part.primary_image.id : part.primary_image}?fit=inside&width=100&height=100`,
-          alt: part.title || 'Part Image'
-        };
-      }
-      
-      // Ensure manufacturer data is properly structured
-      if (part.manufacturer && typeof part.manufacturer === 'string') {
-        part.manufacturer = { name: part.manufacturer };
-      }
-      
-      return part;
-    }),
-    totalItems: partsResponse.meta?.filter_count || 0
-  };
-  
-  return transformedData;
-}, {
-  // Cache the response for 24 hours
-  key: `manufacturer-${slug}`,
-  cache: {
-    maxAge: 86400 // 24 hours in seconds
-  }
-})
+// Fetch manufacturer and their parts from cached endpoint
+const { data: manufacturerData } = await useAsyncData(`manufacturer-${slug}`, () => 
+  $fetch(`/api/sitemap/manufacturers/${slug}`)
+)
 
 // Process the data
 const manufacturer = computed(() => manufacturerData.value?.manufacturer || {})
