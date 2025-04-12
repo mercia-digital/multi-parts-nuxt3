@@ -27,7 +27,19 @@ import { computed } from 'vue';
 
 // Disable default layout to exclude header and footer
 definePageMeta({
-  layout: false
+  layout: false,
+  // Generate static HTML at build time
+  prerender: {
+    enabled: true,
+    // Generate all manufacturer sitemaps
+    async generate() {
+      const partsService = usePartsService()
+      const manufacturers = await partsService.getManufacturers()
+      return manufacturers.map(manufacturer => ({
+        url: `/sitemap/manufacturers/${manufacturer.slug}`
+      }))
+    }
+  }
 })
 
 const route = useRoute()
@@ -39,19 +51,12 @@ const { data: manufacturerData } = await useAsyncData(`manufacturer-${slug}`, as
   const manufacturer = await partsService.getManufacturerBySlug(slug)
   if (!manufacturer) return null
   
-  // Get all parts by this manufacturer without pagination
-  const partsResponse = await partsService.getPartsByManufacturer(manufacturer.id, 1, -1)
+  // Get all parts by this manufacturer without pagination using minimal fields
+  const partsResponse = await partsService.getPartsByManufacturerForSitemap(manufacturer.id, 1, -1)
   
-  // Transform and validate the data
-  const parts = (partsResponse.data || []).map(part => ({
-    part_number: part.part_number,
-    display_part_number: part.display_part_number,
-    title: part.title
-  }))
-
   return {
     manufacturer,
-    parts,
+    parts: partsResponse.data || [],
     totalItems: partsResponse.meta?.filter_count || 0
   }
 }, {

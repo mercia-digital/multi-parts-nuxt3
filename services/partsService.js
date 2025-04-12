@@ -172,7 +172,80 @@ export const usePartsService = () => {
     }
   };
 
-  return { fetchParts, fetchPartDetails, getManufacturerBySlug, getPartsByManufacturer, getPartsByModality };
+  // Get parts by manufacturer ID for sitemap (minimal fields)
+  const getPartsByManufacturerForSitemap = async (manufacturerId, page = 1, limit = 25) => {
+    try {
+      // First get the manufacturer name using the ID
+      const manufacturerResponse = await $fetch(`https://order.multi-inc.com/items/manufacturers/${manufacturerId}?fields=name`);
+      
+      if (!manufacturerResponse.data || !manufacturerResponse.data.name) {
+        return { data: [], meta: { filter_count: 0, total_count: 0 } };
+      }
+      
+      const manufacturerName = manufacturerResponse.data.name;
+      
+      // Query parts using the manufacturer name with minimal fields
+      const queryParams = new URLSearchParams({
+        sort: '-sort,part_number',
+        meta: 'filter_count,total_count',
+        'fields[]': ['part_number', 'display_part_number', 'title'],
+        limit: limit.toString(),
+        page: page.toString(),
+        'filter[manufacturer][name][_eq]': manufacturerName
+      });
+      
+      const queryString = queryParams.toString();
+      
+      const response = await $fetch(`https://order.multi-inc.com/items/parts?${queryString}`);
+      
+      return response;
+    } catch (error) {
+      console.error('Error fetching parts by manufacturer:', error);
+      return { data: [], meta: { filter_count: 0, total_count: 0 } };
+    }
+  };
+
+  // Get parts by modality name for sitemap (minimal fields)
+  const getPartsByModalityForSitemap = async (modalityName, page = 1, limit = 25) => {
+    try {
+      // Query parts using the modality name with minimal fields
+      const queryParams = new URLSearchParams({
+        sort: '-sort,part_number',
+        meta: 'filter_count,total_count',
+        'fields[]': ['part_number', 'display_part_number', 'title'],
+        limit: limit.toString(),
+        page: page.toString(),
+      });
+
+      // Add the modality filter
+      const filters = {
+        _and: [
+          { status: { _neq: "archived" } },
+          { "modalities": { "modalities_id": { "name": { _eq: modalityName } } } }
+        ]
+      };
+
+      queryParams.set('filter', JSON.stringify(filters));
+      
+      const queryString = queryParams.toString();
+      const response = await $fetch(`https://order.multi-inc.com/items/parts?${queryString}`);
+      
+      return response;
+    } catch (error) {
+      console.error('Error fetching parts by modality:', error);
+      return { data: [], meta: { filter_count: 0, total_count: 0 } };
+    }
+  };
+
+  return { 
+    fetchParts, 
+    fetchPartDetails, 
+    getManufacturerBySlug, 
+    getPartsByManufacturer,
+    getPartsByModality,
+    getPartsByManufacturerForSitemap,
+    getPartsByModalityForSitemap
+  };
 };
 
 // Helper function to get manufacturer logo URL without size constraints

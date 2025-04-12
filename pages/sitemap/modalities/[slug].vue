@@ -27,7 +27,19 @@ import { computed } from 'vue';
 
 // Disable default layout to exclude header and footer
 definePageMeta({
-  layout: false
+  layout: false,
+  // Generate static HTML at build time
+  prerender: {
+    enabled: true,
+    // Generate all modality sitemaps
+    async generate() {
+      const partsService = usePartsService()
+      const modalities = await partsService.getModalities()
+      return modalities.map(modality => ({
+        url: `/sitemap/modalities/${encodeURIComponent(modality.name)}`
+      }))
+    }
+  }
 })
 
 const route = useRoute()
@@ -39,18 +51,11 @@ const modalityName = computed(() => decodeURIComponent(slug))
 
 // Fetch parts for the modality
 const { data: modalityData } = await useAsyncData(`modality-${slug}`, async () => {
-  // Get all parts for this modality without pagination
-  const partsResponse = await partsService.getPartsByModality(modalityName.value, 1, -1)
+  // Get all parts for this modality without pagination using minimal fields
+  const partsResponse = await partsService.getPartsByModalityForSitemap(modalityName.value, 1, -1)
   
-  // Transform and validate the data
-  const parts = (partsResponse.data || []).map(part => ({
-    part_number: part.part_number,
-    display_part_number: part.display_part_number,
-    title: part.title
-  }))
-
   return {
-    parts,
+    parts: partsResponse.data || [],
     totalItems: partsResponse.meta?.filter_count || 0
   }
 }, {
