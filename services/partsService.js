@@ -108,13 +108,13 @@ export const usePartsService = () => {
   };
 
   // New method to get parts by manufacturer ID
-  const getPartsByManufacturer = async (manufacturerId) => {
+  const getPartsByManufacturer = async (manufacturerId, page = 1, limit = 25) => {
     try {
       // First get the manufacturer name using the ID
       const manufacturerResponse = await $fetch(`https://order.multi-inc.com/items/manufacturers/${manufacturerId}?fields=name`);
       
       if (!manufacturerResponse.data || !manufacturerResponse.data.name) {
-        return [];
+        return { data: [], meta: { filter_count: 0, total_count: 0 } };
       }
       
       const manufacturerName = manufacturerResponse.data.name;
@@ -124,8 +124,8 @@ export const usePartsService = () => {
         sort: '-sort,part_number',
         meta: 'filter_count,total_count',
         'fields[]': ['part_number', 'display_part_number', 'title', 'primary_image.*', 'manufacturer.*', 'manufacturer.logo.*'],
-        limit: '20',
-        page: '1',
+        limit: limit.toString(),
+        page: page.toString(),
         'filter[manufacturer][name][_eq]': manufacturerName
       });
       
@@ -133,28 +133,46 @@ export const usePartsService = () => {
       
       const response = await $fetch(`https://order.multi-inc.com/items/parts?${queryString}`);
       
-      if (response.data) {
-        // Process primary images
-        return response.data.map(part => {
-          if (part.primary_image) {
-            part.primary_image = {
-              id: part.primary_image,
-              src: `https://order.multi-inc.com/assets/${part.primary_image}?fit=inside&width=300&height=300`,
-              alt: part.title || 'Part Image'
-            };
-          }
-          return part;
-        });
-      }
-      
-      return [];
+      return response;
     } catch (error) {
       console.error('Error fetching parts by manufacturer:', error);
-      return [];
+      return { data: [], meta: { filter_count: 0, total_count: 0 } };
     }
   };
 
-  return { fetchParts, fetchPartDetails, getManufacturerBySlug, getPartsByManufacturer };
+  // Get parts by modality name
+  const getPartsByModality = async (modalityName, page = 1, limit = 25) => {
+    try {
+      // Query parts using the modality name with the exact filter structure
+      const queryParams = new URLSearchParams({
+        sort: '-sort,part_number',
+        meta: 'filter_count,total_count',
+        'fields[]': ['part_number', 'display_part_number', 'title', 'primary_image.*', 'manufacturer.*', 'manufacturer.logo.*'],
+        limit: limit.toString(),
+        page: page.toString(),
+      });
+
+      // Add the modality filter
+      const filters = {
+        _and: [
+          { status: { _neq: "archived" } },
+          { "modalities": { "modalities_id": { "name": { _eq: modalityName } } } }
+        ]
+      };
+
+      queryParams.set('filter', JSON.stringify(filters));
+      
+      const queryString = queryParams.toString();
+      const response = await $fetch(`https://order.multi-inc.com/items/parts?${queryString}`);
+      
+      return response;
+    } catch (error) {
+      console.error('Error fetching parts by modality:', error);
+      return { data: [], meta: { filter_count: 0, total_count: 0 } };
+    }
+  };
+
+  return { fetchParts, fetchPartDetails, getManufacturerBySlug, getPartsByManufacturer, getPartsByModality };
 };
 
 // Helper function to get manufacturer logo URL without size constraints

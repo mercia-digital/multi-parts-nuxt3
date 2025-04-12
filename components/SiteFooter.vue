@@ -161,6 +161,8 @@
                             href="https://multidiagnostic-4679263.hs-sites.com/parts?hsLang=en&amp;__hstc=47344888.6ca521a6cf95ebf7e5c3cdbc2582a615.1708354615889.1722447835724.1722547227361.76&amp;__hssc=47344888.1.1722547227361&amp;__hsfp=1399665375"
                             rel="noopener"><span style="color: #ffffff;">Parts</span></a><br>
                           <hr style="border-top: 1px dashed #C4CFC7; border-bottom: 0px; margin-top: 0px;"><a
+                            href="/sitemap" rel="noopener"><span style="color: #ffffff;">Sitemap</span></a><br>
+                          <hr style="border-top: 1px dashed #C4CFC7; border-bottom: 0px; margin-top: 0px;"><a
                             href="https://multidiagnostic-4679263.hs-sites.com/medical-equipment?hsLang=en&amp;__hstc=47344888.6ca521a6cf95ebf7e5c3cdbc2582a615.1708354615889.1722447835724.1722547227361.76&amp;__hssc=47344888.1.1722547227361&amp;__hsfp=1399665375"
                             rel="noopener"><span style="color: #ffffff;">Medical Equipment</span></a><br>
                           <hr style="border-top: 1px dashed #C4CFC7; border-bottom: 0px; margin-top: 0px;"><a

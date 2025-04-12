@@ -292,7 +292,7 @@ const metaDescription = computed(() => {
         ? partDetails.value.manufacturer.name || ''
         : partDetails.value.manufacturer
   }
-  return `Part #: ${partNum}${manufacturer ? ' by ' + manufacturer : ''} -- ${partTitle.value} -- High-quality parts for Healthcare Technology Management.`
+  return `${partNum}${manufacturer ? ' by ' + manufacturer : ''} -- ${partTitle.value} -- High-quality parts for Healthcare Technology Management.`
 })
 
 const defaultImageUrl = computed(() => {

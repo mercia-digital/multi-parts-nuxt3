@@ -316,84 +316,73 @@ const breadcrumbItems = computed(() => {
 
 <style lang="less" scoped>
 #pagination {
-    margin-bottom: 25px;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
 
-    button {
-        appearance: none;
-        border: none;
-        background: transparent;
+#pagination button {
+    padding: 0.5rem 1rem;
+    border: 1px solid #d2e9fc;
+    background-color: white;
+    color: #304d6d;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
 
-        border-radius: 50px;
-        padding: 10px 15px;
-        color: #fff;
-        white-space: nowrap;
-        transition: all .3s ease;
-        background-color: #dc602e;
-        font-size: 18px;
-        line-height: 18px;
-        cursor: pointer;
+#pagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
 
-        &.hide-on-mobile {
-            @media screen and (max-width: 1023px) {
-                display: none;
-            }
-        }
+#pagination button.number {
+    min-width: 2.5rem;
+    text-align: center;
+}
 
-        &.current {
-            cursor: default;
-            background-color: #fff;
-            color: #dc602e;
-            border: solid 2px #dc602e;
+#pagination button.number.current {
+    background-color: #304d6d;
+    color: white;
+    border-color: #304d6d;
+}
 
-            &:hover {
-                background-color: #fff;
-                color: #dc602e;
-                border: solid 2px #dc602e;
-            }
-        }
+#pagination button:hover:not(:disabled) {
+    background-color: #eff7ff;
+    border-color: #304d6d;
+}
 
-        &:last-of-type {
-            color: #fff;
-            background-color: #dc602e;
-            border: none;
-            cursor: pointer !important;
-        }
+#pagination button.number.current:hover {
+    background-color: #1e3a5f;
+}
 
-        &:hover {
-            background-color: #2275b5;
-        }
-    }
+.showing {
+    text-align: center;
+    color: #666;
+    margin: 1rem 0;
 }
 
 .ppp {
-    background-color: #e0e4e9;
-    font-size: 18px;
-
-    label {
-        margin-right: 10px;
-    }
-
-    select {
-        border: none;
-    }
+    background-color: #f9f9f9;
+    border: 1px solid #d2e9fc;
+    border-radius: 0.5rem;
 }
 
-.button {
-    border-radius: 50px;
-    padding: 10px 15px;
-    color: #fff;
-    white-space: nowrap;
-    transition: all .3s ease;
+.ppp label {
+    margin-right: 0.5rem;
+    color: #666;
 }
 
-.actions {
-    .button {
-        background-color: #dc602e;
+.ppp select {
+    border: 1px solid #d2e9fc;
+    background-color: white;
+    color: #304d6d;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+}
 
-        &:hover {
-            background-color: #2275b5;
-        }
-    }
+.ppp select:hover {
+    border-color: #304d6d;
 }
 
 #parts-list {
@@ -489,7 +478,6 @@ const breadcrumbItems = computed(() => {
 
             .pn {
                 order: 1;
-
             }
 
             .manufacturer {
@@ -507,6 +495,24 @@ const breadcrumbItems = computed(() => {
                 order: 4;
                 background-color: #eff7ff;
             }
+        }
+    }
+}
+
+.button {
+    border-radius: 50px;
+    padding: 10px 15px;
+    color: #fff;
+    white-space: nowrap;
+    transition: all .3s ease;
+}
+
+.actions {
+    .button {
+        background-color: #dc602e;
+
+        &:hover {
+            background-color: #2275b5;
         }
     }
 }
