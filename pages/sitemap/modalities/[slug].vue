@@ -24,6 +24,7 @@
 <script setup>
 import { usePartsService } from '~/services/partsService';
 import { computed } from 'vue';
+import { useStorage } from '~/composables/useStorage';
 
 // Disable default layout to exclude header and footer
 definePageMeta({
@@ -39,6 +40,17 @@ const modalityName = computed(() => decodeURIComponent(slug))
 
 // Fetch parts for the modality
 const { data: modalityData } = await useAsyncData(`modality-${slug}`, async () => {
+  const storage = useStorage()
+  const cacheKey = `sitemap:modality:${slug}`
+  
+  // Try to get cached data
+  const cachedData = await storage.getItem(cacheKey)
+  if (cachedData) {
+    console.log('Cache hit for modality:', slug)
+    return cachedData
+  }
+  
+  console.log('Cache miss for modality:', slug)
   // Get all parts for this modality without pagination
   const partsResponse = await partsService.getPartsByModality(modalityName.value, 1, -1)
   
@@ -68,6 +80,9 @@ const { data: modalityData } = await useAsyncData(`modality-${slug}`, async () =
     }),
     totalItems: partsResponse.meta?.filter_count || 0
   };
+  
+  // Cache the data
+  await storage.setItem(cacheKey, transformedData, { ttl: 86400 }) // 24 hours
   
   return transformedData;
 }, {

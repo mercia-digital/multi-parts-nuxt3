@@ -92,5 +92,14 @@ export default defineNuxtConfig({
       __dangerouslyDisableSanitizers: ['script'],
       // Add other head properties as needed
     },
+  },
+
+  nitro: {
+    storage: {
+      cache: {
+        driver: 'fs',
+        base: './.nuxt/cache'
+      }
+    }
   }
 })

@@ -24,6 +24,7 @@
 <script setup>
 import { usePartsService } from '~/services/partsService';
 import { computed } from 'vue';
+import { useStorage } from '~/composables/useStorage';
 
 // Disable default layout to exclude header and footer
 definePageMeta({
@@ -36,6 +37,17 @@ const partsService = usePartsService()
 
 // Fetch manufacturer and their parts
 const { data: manufacturerData } = await useAsyncData(`manufacturer-${slug}`, async () => {
+  const storage = useStorage()
+  const cacheKey = `sitemap:manufacturer:${slug}`
+  
+  // Try to get cached data
+  const cachedData = await storage.getItem(cacheKey)
+  if (cachedData) {
+    console.log('Cache hit for manufacturer:', slug)
+    return cachedData
+  }
+  
+  console.log('Cache miss for manufacturer:', slug)
   const manufacturer = await partsService.getManufacturerBySlug(slug)
   if (!manufacturer) return null
   
@@ -69,6 +81,9 @@ const { data: manufacturerData } = await useAsyncData(`manufacturer-${slug}`, as
     }),
     totalItems: partsResponse.meta?.filter_count || 0
   };
+  
+  // Cache the data
+  await storage.setItem(cacheKey, transformedData, { ttl: 86400 }) // 24 hours
   
   return transformedData;
 }, {
