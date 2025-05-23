@@ -244,8 +244,25 @@ export const usePartsService = () => {
     getPartsByManufacturer,
     getPartsByModality,
     getPartsByManufacturerForSitemap,
-    getPartsByModalityForSitemap
+    getPartsByModalityForSitemap,
+    getModalityBySlug // Add this line
   };
+};
+
+// Get modality by slug
+const getModalityBySlug = async (slug) => {
+  try {
+    const response = await $fetch(`https://order.multi-inc.com/items/modalities?filter[slug][_eq]=${slug}&fields=id,name,slug,description`);
+    
+    if (response.data && response.data.length > 0) {
+      return response.data[0];
+    }
+    
+    return null;
+  } catch (error) {
+    console.error('Error fetching modality by slug:', error);
+    return null;
+  }
 };
 
 // Helper function to get manufacturer logo URL without size constraints

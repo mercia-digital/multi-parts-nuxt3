@@ -23,65 +23,93 @@
 
 <script setup>
 import { usePartsService } from '~/services/partsService';
+import { useCollectionService } from '~/services/collectionService'; // Added for generate function
 import { computed } from 'vue';
+import { useRoute, useAsyncData, createError, useHead } from '#app'; // Ensure createError and useHead are imported
 
 // Disable default layout to exclude header and footer
 definePageMeta({
   layout: false,
-  // Generate static HTML at build time
   prerender: {
     enabled: true,
-    // Generate all modality sitemaps
     async generate() {
-      const partsService = usePartsService()
-      const modalities = await partsService.getModalities()
-      return modalities.map(modality => ({
-        url: `/sitemap/modalities/${encodeURIComponent(modality.name)}`
-      }))
+      const { fetchCollection } = useCollectionService(); 
+      try {
+        const { data: modalitiesResponse } = await fetchCollection({ 
+          collection: 'modalities', 
+          fields: 'slug,name' // Fetch slug and name
+        });
+        const modalities = modalitiesResponse.value?.data || [];
+        if (!modalities.length) {
+          console.warn('Sitemap generation: No modalities found for sitemap/modalities/[slug].vue');
+          return [];
+        }
+        return modalities.map(modality => {
+          if (!modality.slug) {
+            console.warn(`Sitemap generation: Modality "${modality.name || 'Unknown'}" is missing a slug.`);
+            return null; 
+          }
+          return { url: `/sitemap/modalities/${modality.slug}` }; // Use slug here
+        }).filter(item => item !== null);
+      } catch (e) {
+        console.error('Error during sitemap generation for modalities:', e);
+        return []; 
+      }
     }
   }
-})
+});
 
-const route = useRoute()
-const { slug } = route.params
-const partsService = usePartsService()
+const route = useRoute();
+const partsService = usePartsService();
+const { slug } = route.params;
 
-// Compute the modality name once
-const modalityName = computed(() => decodeURIComponent(slug))
+// Fetch modality details and its parts for the sitemap
+const { data: pageData, error } = await useAsyncData(
+  `modality-sitemap-${slug}`, 
+  async () => {
+    const modalityDetails = await partsService.getModalityBySlug(slug);
 
-// Fetch parts for the modality
-const { data: modalityData } = await useAsyncData(`modality-${slug}`, async () => {
-  // Get all parts for this modality without pagination using minimal fields
-  const partsResponse = await partsService.getPartsByModalityForSitemap(modalityName.value, 1, -1)
-  
-  return {
-    parts: partsResponse.data || [],
-    totalItems: partsResponse.meta?.filter_count || 0
+    if (!modalityDetails) {
+      // Throw a 404 error if modality is not found, Nuxt will handle rendering the error page
+      throw createError({ statusCode: 404, message: `Modality with slug "${slug}" not found.`, fatal: true });
+    }
+    
+    // Fetch parts using the name from the fetched modalityDetails
+    const partsResponse = await partsService.getPartsByModalityForSitemap(modalityDetails.name, 1, -1); // -1 for limit to get all parts
+    
+    return {
+      modality: modalityDetails, // Store the fetched modality details
+      parts: partsResponse?.data || [],
+      totalItems: partsResponse?.meta?.filter_count || 0
+    };
   }
-}, {
-  // Cache the response for 24 hours
-  key: `modality-${slug}`,
-  cache: {
-    maxAge: 86400 // 24 hours in seconds
-  }
-})
+  // No explicit key needed here, useAsyncData generates one. Caching can be added if desired.
+);
 
-// Process the data
-const parts = computed(() => modalityData.value?.parts || [])
+// Computed properties to access modality and parts data
+const modality = computed(() => pageData.value?.modality);
+const parts = computed(() => pageData.value?.parts || []);
+// Use the fetched modality name for display. Fallback to decoded slug if modality data isn't loaded yet.
+const modalityName = computed(() => modality.value?.name || decodeURIComponent(slug));
 
-// Helper function to get display part number
+// Helper function to get display part number or fall back to part_number
 const getPartNumber = (part) => {
-  return part.display_part_number || part.part_number
-}
+  return part.display_part_number || part.part_number;
+};
 
-// SEO metadata
-useHead({
-  title: `MULTI, INC. - ${modalityName.value || 'Modality'} Parts Sitemap`,
+// SEO metadata using computed properties for dynamic content
+useHead(() => ({
+  title: `Parts Sitemap for ${modalityName.value} | MULTI, INC.`,
   meta: [
     {
       name: 'description',
-      content: `Browse all ${modalityName.value || 'modality'} parts available at MULTI, INC.`
-    }
+      content: `Sitemap listing all available parts for the ${modalityName.value} modality at MULTI, INC. Find direct links to part details.`
+    },
+    { name: 'robots', content: 'noindex, follow' } // Sitemaps themselves are often not indexed
+  ],
+  link: [
+    // Ensure the canonical URL uses the slug from the route parameters
+    { rel: 'canonical', href: `https://parts.multi-inc.com/sitemap/modalities/${slug}` }
   ]
-})
-</script> 
+}));
+</script>
