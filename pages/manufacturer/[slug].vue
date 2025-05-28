@@ -54,7 +54,7 @@
                          :alt="part.title" />
                   </div>
                   <div class="pn p-2"><label>Part Number</label>{{ getPartNumber(part) }}</div>
-                  <div class="title p-2 uppercase"><label>Part Description</label>{{ part.title }}</div>
+                  <div class="title p-2 uppercase"><label>Part Description</label>{{ he.decode(part.title || '') }}</div>
                   <div class="actions p-2 flex justify-around">
                     <a :href="`/part/${part.part_number}`" class="button m-1">View Part</a>
                     <a :href="`https://www.multi-inc.com/request-a-quote-parts?part_numbers=${getPartNumber(part)}`"
