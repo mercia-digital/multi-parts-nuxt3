@@ -9,13 +9,15 @@
         >
           {{ item.name }}
         </NuxtLink>
-        <span v-else class="breadcrumb-current">{{ item.name }}</span>
+        <span v-else class="breadcrumb-current">{{ he.decode(item.name || '') }}</span>
       </li>
     </ol>
   </nav>
 </template>
 
 <script setup>
+import he from 'he';
+
 defineProps({
   items: {
     type: Array,
