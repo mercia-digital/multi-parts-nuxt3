@@ -204,8 +204,8 @@
                     class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_rich_text" style=""
                     data-hs-cos-general-type="widget" data-hs-cos-type="rich_text">
                     <h2 style="font-size: 13px; text-align: center; line-height: 1;"><span
-                        style="font-family: helvetica; color: #ffffff;">Copyright © 2021. All Rights Reserved. Site By
-                        Open Path Digital</span></h2>
+                        style="font-family: helvetica; color: #ffffff;">Copyright © 2021. All Rights Reserved. Main Site By
+                        Open Path Digital</span><span style="font-family: helvetica; color: #ffffff;padding: 0 10px">Parts Catalog by <a href="https://mercia.digital" target="_blank">Mercia Digital LLC</a></span></h2>
                   </span></div>
 
               </div><!--end widget-span -->
