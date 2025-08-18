@@ -373,7 +373,7 @@
 
                 </li>
                 <li class="no-submenu menu-item hs-skip-lang-url-rewrite">
-                  <a href="https://parts.multi-inc.com/parts?modality=Power+Quality+Systems" class="menu-link">Power Quality Systems</a>
+                  <a href="https://parts.multi-inc.com/parts?modality=Power+Quality+Solutions" class="menu-link">Power Quality Solutions</a>
 
 
                 </li>
@@ -493,7 +493,7 @@
                             href="https://www.multi-inc.com/surgical-equipment" role="menuitem">Surgical Equipment</a>
                         </li>
                         <li class="hs-menu-item hs-menu-depth-1" role="none"><a
-                            href="https://parts.multi-inc.com/parts?modality=Power+Quality+Systems" role="menuitem">Power Quality Systems</a>
+                            href="https://parts.multi-inc.com/parts?modality=Power+Quality+Solutions" role="menuitem">Power Quality Solutions</a>
                         </li>
                         <li class="hs-menu-item hs-menu-depth-1" role="none"><a href="https://www.multi-inc.com/service"
                             role="menuitem">Schedule Service</a></li>
