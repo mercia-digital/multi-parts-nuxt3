@@ -199,7 +199,7 @@
 
 
                         <li class="no-submenu menu-item hs-skip-lang-url-rewrite" style="display: block">
-                          <a href="https://parts.multi-inc.com/search/manufacturer/GE%20Healthcare" class="menu-link">GE
+                          <a href="https://parts.multi-inc.com/manufacturer/ge-healthcare" class="menu-link">GE
                             HealthCare</a>
 
 
@@ -210,7 +210,7 @@
 
 
                         <li class="no-submenu menu-item hs-skip-lang-url-rewrite">
-                          <a href="https://parts.multi-inc.com/search/manufacturer/Siemens%20Healthineers"
+                          <a href="https://parts.multi-inc.com/manufacturer/siemens-healthineers"
                             class="menu-link">Siemens Healthineers</a>
 
 
@@ -221,7 +221,7 @@
 
 
                         <li class="no-submenu menu-item hs-skip-lang-url-rewrite">
-                          <a href="https://parts.multi-inc.com/search/manufacturer/Canon%20Medical%20Systems%20USA"
+                          <a href="https://parts.multi-inc.com/manufacturer/canon-medical-systems-usa"
                             class="menu-link">Canon Medical Systems</a>
 
 
@@ -232,7 +232,7 @@
 
 
                         <li class="no-submenu menu-item hs-skip-lang-url-rewrite">
-                          <a href="https://parts.multi-inc.com/search/manufacturer/Philips%20Healthcare"
+                          <a href="https://parts.multi-inc.com/manufacturer/philips-healthcare"
                             class="menu-link">Philips Healthcare</a>
 
 
@@ -243,7 +243,7 @@
 
 
                         <li class="no-submenu menu-item hs-skip-lang-url-rewrite">
-                          <a href="https://parts.multi-inc.com/search/manufacturer/Carestream%20Health"
+                          <a href="https://parts.multi-inc.com/manufacturer/carestream-health"
                             class="menu-link">Carestream Health</a>
 
 
@@ -254,7 +254,7 @@
 
 
                         <li class="no-submenu menu-item hs-skip-lang-url-rewrite">
-                          <a href="https://parts.multi-inc.com/search/manufacturer/Fujifilm%20Medical%20Systems"
+                          <a href="https://parts.multi-inc.com/manufacturer/fujifilm-medical-systems"
                             class="menu-link">Fujifilm Medical Systems</a>
 
 
@@ -265,7 +265,7 @@
 
 
                         <li class="no-submenu menu-item hs-skip-lang-url-rewrite">
-                          <a href="https://parts.multi-inc.com/search/manufacturer/AGFA%20Healthcare"
+                          <a href="https://parts.multi-inc.com/manufacturer/agfa-healthcare"
                             class="menu-link">AGFA Healthcare</a>
 
 
@@ -276,8 +276,14 @@
 
 
                         <li class="no-submenu menu-item hs-skip-lang-url-rewrite">
-                          <a href="https://parts.multi-inc.com/search/manufacturer/Konica-Minolta"
+                          <a href="https://parts.multi-inc.com/manufacturer/konica-minolta"
                             class="menu-link">Konica-Minolta</a>
+
+
+                        </li>
+                        <li class="no-submenu menu-item hs-skip-lang-url-rewrite">
+                          <a href="https://parts.multi-inc.com/manufacturer/nxt-power"
+                            class="menu-link">NXT Power</a>
 
 
                         </li>
@@ -324,7 +330,7 @@
 
 
                         <li class="no-submenu menu-item hs-skip-lang-url-rewrite" style="display: block">
-                          <a href="https://parts.multi-inc.com/search/modality/Batteries" class="menu-link">Batteries</a>
+                          <a href="https://parts.multi-inc.com/parts?modality=Batteries" class="menu-link">Batteries</a>
 
 
                         </li>
@@ -334,7 +340,7 @@
 
 
                         <li class="no-submenu menu-item hs-skip-lang-url-rewrite">
-                          <a href="https://parts.multi-inc.com/search/modality/Bulbs" class="menu-link">Bulbs</a>
+                          <a href="https://parts.multi-inc.com/parts?modality=Bulbs" class="menu-link">Bulbs</a>
 
 
                         </li>
@@ -373,7 +379,7 @@
 
                 </li>
                 <li class="no-submenu menu-item hs-skip-lang-url-rewrite">
-                  <a href="https://parts.multi-inc.com/parts?modality=Power+Quality+Solutions" class="menu-link">Power Quality Solutions</a>
+                  <a href="https://parts.multi-inc.com/modality/power-quality-solutions" class="menu-link">Power Quality Solutions</a>
 
 
                 </li>
@@ -445,29 +451,32 @@
                                   href="javascript:;" role="menuitem"><span class="category">By Brand</span></a>
                               <ul role="menu" class="hs-menu-children-wrapper">
                                 <li class="hs-menu-item hs-menu-depth-3" role="none"><a
-                                    href="https://parts.multi-inc.com/search/manufacturer/GE%20Healthcare"
+                                    href="https://parts.multi-inc.com/manufacturer/ge-healthcare"
                                     role="menuitem">GE HealthCare</a></li>
                                 <li class="hs-menu-item hs-menu-depth-3" role="none"><a
-                                    href="https://parts.multi-inc.com/search/manufacturer/Siemens%20Healthineers"
+                                    href="https://parts.multi-inc.com/manufacturer/siemens-healthineers"
                                     role="menuitem">Siemens Healthineers</a></li>
                                 <li class="hs-menu-item hs-menu-depth-3" role="none"><a
-                                    href="https://parts.multi-inc.com/search/manufacturer/Canon%20Medical%20Systems%20USA"
+                                    href="https://parts.multi-inc.com/manufacturer/canon-medical-systems-usa"
                                     role="menuitem">Canon Medical Systems</a></li>
                                 <li class="hs-menu-item hs-menu-depth-3" role="none"><a
-                                    href="https://parts.multi-inc.com/search/manufacturer/Philips%20Healthcare"
+                                    href="https://parts.multi-inc.com/manufacturer/philips-healthcare"
                                     role="menuitem">Philips Healthcare</a></li>
                                 <li class="hs-menu-item hs-menu-depth-3" role="none"><a
-                                    href="https://parts.multi-inc.com/search/manufacturer/Carestream%20Health"
+                                    href="https://parts.multi-inc.com/manufacturer/carestream-health"
                                     role="menuitem">Carestream Health</a></li>
                                 <li class="hs-menu-item hs-menu-depth-3" role="none"><a
-                                    href="https://parts.multi-inc.com/search/manufacturer/Fujifilm%20Medical%20Systems"
+                                    href="https://parts.multi-inc.com/manufacturer/fujifilm-medical-systems"
                                     role="menuitem">Fujifilm Medical Systems</a></li>
                                 <li class="hs-menu-item hs-menu-depth-3" role="none"><a
-                                    href="https://parts.multi-inc.com/search/manufacturer/AGFA%20Healthcare"
+                                    href="https://parts.multi-inc.com/manufacturer/agfa-healthcare"
                                     role="menuitem">AGFA Healthcare</a></li>
                                 <li class="hs-menu-item hs-menu-depth-3" role="none"><a
-                                    href="https://parts.multi-inc.com/search/manufacturer/Konica-Minolta"
+                                    href="https://parts.multi-inc.com/manufacturer/konica-minolta"
                                     role="menuitem">Konica-Minolta</a></li>
+                                    <li class="hs-menu-item hs-menu-depth-3" role="none"><a
+                                    href="https://parts.multi-inc.com/manufacturer/nxt-power"
+                                    role="menuitem">NXT Power</a></li>
                               </ul>
                             </li>
                             <div class="wrapped">                              
@@ -475,10 +484,10 @@
                                   href="javascript:;" role="menuitem"><span class="category">Other</span></a>
                                 <ul role="menu" class="hs-menu-children-wrapper">
                                   <li class="hs-menu-item hs-menu-depth-3" role="none"><a
-                                      href="https://parts.multi-inc.com/search/modality/Batteries"
+                                      href="https://parts.multi-inc.com/parts?modality=Batteries"
                                       role="menuitem">Batteries</a></li>
                                   <li class="hs-menu-item hs-menu-depth-3" role="none"><a
-                                      href="https://parts.multi-inc.com/search/modality/Bulbs" role="menuitem">Bulbs</a>
+                                      href="https://parts.multi-inc.com/parts?modality=Bulbs" role="menuitem">Bulbs</a>
                                   </li>
                                 </ul>
                               </li>
