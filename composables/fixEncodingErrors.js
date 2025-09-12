@@ -1,4 +1,4 @@
-import { decode } from 'he';
+import { decode } from 'html-entities';
 
 export const fixEncodingErrors = (text) => {
     if (!text) {
