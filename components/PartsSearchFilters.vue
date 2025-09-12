@@ -1,6 +1,6 @@
 <template>
   <div id="search-filters" class="p-6 mb-6 rounded-lg flex flex-wrap gap-4 justify-end">
-    <div class="w-9/12 flex-grow">
+    <div class="w-7/12 flex-grow">
       <input 
         type="text" 
         v-model="searchTerm" 
@@ -9,8 +9,11 @@
         class="px-4 py-2 w-full border rounded-full" 
       />
     </div>
-    <div class="clear-search-wrapper w-2/12">
-      <div class="clear-search">
+    <div class="clear-search-wrapper w-full justify-center lg:w-4/12 flex flex-wrap gap-4 lg:justify-end ">
+      <div class="do-search flex-grow">
+        <a @click="search" class="block button text-center transition-all duration-300">Search</a>
+      </div>
+      <div class="clear-search flex-grow">
         <a href="/parts" class="block button text-center transition-all duration-300">Clear Filters</a>
       </div>
     </div>
@@ -185,6 +188,16 @@ defineExpose({
         }
       }
     }
+
+    .do-search {
+      a {
+        background-color: #dc602e;
+
+        &:hover {
+          background-color: #b34d26;
+        }
+      }
+    }
   }
 }
 
@@ -194,5 +207,6 @@ defineExpose({
   color: #fff;
   white-space: nowrap;
   transition: all .3s ease;
+  line-height: 21px;
 }
 </style> 

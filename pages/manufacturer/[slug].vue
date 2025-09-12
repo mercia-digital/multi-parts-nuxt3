@@ -3,7 +3,7 @@
     <div v-if="error" class="error-container">
       <h1>Error Loading Manufacturer</h1>
       <p>{{ error.message }}</p>
-      <NuxtLink to="/parts" class="back-button">Back to Parts</NuxtLink>
+      <NuxtLink to="/parts" class="back-button">Back to Products</NuxtLink>
     </div>
     
     <div v-else-if="manufacturer" class="manufacturer-details">
@@ -42,8 +42,8 @@
                 <div class="text-white table-header-group">
                   <div class="table-row table-header">
                     <div class="table-cell px-4 py-2">Image</div>
-                    <div class="table-cell px-4 py-2">Part Number</div>
-                    <div class="table-cell px-4 py-2">Part Description</div>
+                    <div class="table-cell px-4 py-2">Product Number</div>
+                    <div class="table-cell px-4 py-2">Product Description</div>
                     <div class="table-cell px-4 py-2"></div> <!-- Actions Column -->
                   </div>
                 </div>
@@ -53,12 +53,13 @@
                          class="w-100px w-100px mx-auto"
                          :alt="part.title" />
                   </div>
-                  <div class="pn p-2"><label>Part Number</label>{{ getPartNumber(part) }}</div>
-                  <div class="title p-2 uppercase"><label>Part Description</label>{{ he.decode(part.title || '') }}</div>
+                  <div class="pn p-2"><label>Product Number</label>{{ getPartNumber(part) }}</div>
+                  <div class="title p-2 uppercase"><label>Product Description</label>{{ he.decode(part.title || '') }}</div>
                   <div class="actions p-2 flex justify-around">
                     <a :href="`/part/${part.part_number}`" class="button m-1">View Product</a>
-                    <a :href="`https://www.multi-inc.com/request-a-quote-parts?part_numbers=${getPartNumber(part)}`"
+                    <a v-if="part.manufacturer?.name !== 'NXT Power'" :href="`https://www.multi-inc.com/request-a-quote-parts?part_numbers=${getPartNumber(part)}`"
                         class="button m-1" target="_blank">Request a Quote</a>
+                    <a v-else :href="`https://www.multi-inc.com/request-a-quote-pqs?part_numbers=${getPartNumber(part)}&manufacturer=NXT+Power`" class="button m-1" target="_blank">Request a Quote</a>
                   </div>
                 </div>
               </div>
@@ -79,11 +80,11 @@
             </div>
             <div class="showing text-center">
               Showing {{ page != 1 ? (page - 1) * limit : 1 }} to {{ limit * page > totalItems ? totalItems : limit * page }}
-              of {{ totalItems }} records
+              of {{ totalItems }} products
             </div>
             <div class="flex justify-end">
               <div class="ppp m-4 p-2 rounded">
-                <label>Parts Per Page:</label>
+                <label>Products Per Page:</label>
                 <select v-model="limit" @change="changeLimit" class="rounded-full p-2">
                   <option value="10">10</option>
                   <option value="25">25</option>
@@ -94,7 +95,7 @@
             </div>
           </div>
           <div v-else>
-            <h3 style="text-align: center; padding: 50px">No parts found for this manufacturer.</h3>
+            <h3 style="text-align: center; padding: 50px">No products found for this manufacturer.</h3>
           </div>
         </div>
       </div>

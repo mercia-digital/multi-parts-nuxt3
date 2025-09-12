@@ -1,4 +1,8 @@
 export default defineNuxtRouteMiddleware(async (to, from) => {
+  if (to.path === '/parts' && to.query.modality === 'Power Quality Solutions') {
+    return navigateTo('/manufacturer/nxt-power', { redirectCode: 302 });
+  }
+
   if (to.fullPath.startsWith('/search/')) {
     const segments = to.fullPath.split('/').filter(Boolean).map(decodeURI);
     const params = {};

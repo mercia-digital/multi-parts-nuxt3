@@ -37,13 +37,14 @@
               <li v-else><h3>Condition: <span class="meta-value">New</span></h3></li>
               <li v-if="partDetails.warranty"><h3>Warranty: <span class="meta-value">{{ partDetails.warranty }}</span></h3></li>
               <li v-if="returnableText !== null"><h3>Returnable: <span class="meta-value">{{ returnableText }}</span></h3></li>
-              <li><h3>OEM Quality Assurance: <span class="meta-value">Passed</span></h3></li>
-              <li><h3>Lead Times: <span class="meta-value">Most parts shipped from inventory on the same day.</span></h3></li>            
-              <li><h3 style="display: inline-block">Accurate Pricing:</h3> <a :href="`https://www.multi-inc.com/request-a-quote-parts?part_numbers=${getPartNumber(partDetails)}`"
+              <li v-if="partDetails.manufacturer?.name !== 'NXT Power'"><h3>OEM Quality Assurance: <span class="meta-value">Passed</span></h3></li>
+              <li v-if="partDetails.manufacturer?.name !== 'NXT Power'"><h3>Lead Times: <span class="meta-value">Most parts shipped from inventory on the same day.</span></h3></li>            
+              <li v-if="partDetails.manufacturer?.name !== 'NXT Power'"><a :href="`https://www.multi-inc.com/request-a-quote-parts?part_numbers=${getPartNumber(partDetails)}&manufacturer=${partDetails.manufacturer?.name}`"
               target="_blank"
               class="button request-quote">
               Request a Quote
             </a></li>
+              <li v-else><a :href="`https://www.multi-inc.com/request-a-quote-pqs?part_numbers=${getPartNumber(partDetails)}&manufacturer=NXT+Power`" target="_blank" class="button request-quote">Request a Quote</a></li>
             </ul>
           </div>
           <hr>        
@@ -95,6 +96,7 @@ import { ref, computed } from 'vue'
 import { useRoute, navigateTo, useHead, useAsyncData } from '#imports'
 import { usePartsService } from '~/services/partsService'
 import he from 'he'
+import { fixEncodingErrors } from '~/composables/fixEncodingErrors';
 // Optionally import UI components (e.g., Breadcrumbs) if they’re used in the template
 // import Breadcrumbs from '~/components/Breadcrumbs.vue'
 
@@ -114,16 +116,17 @@ const getPartNumber = (part) => {
 
 // --- Computed Properties (Dependent on partDetails) ---
 const partTitle = computed(() => {
-  return partDetails.value ? he.decode(partDetails.value.title || '') : ''
+  return partDetails.value ? fixEncodingErrors(partDetails.value.title || '') : ''
 })
 
 const partContent = computed(() => {
   return partDetails.value && partDetails.value.content
-    ? he.decode(partDetails.value.content)
+    ? fixEncodingErrors(partDetails.value.content)
     : ''
 })
 
 const returnableText = computed(() => {
+  if (partDetails.value?.manufacturer?.name === 'NXT Power') return null
   if (!partDetails.value) return null
   return partDetails.value.returnable === null
     ? null
@@ -159,7 +162,7 @@ const breadcrumbItems = computed(() => {
     { name: 'Parts', path: '/parts' },
     { name: manufacturerName, path: `/manufacturer/${manufacturerSlug}` },
     {
-      name: partDetails.value.title || 'Part Details',
+      name: fixEncodingErrors(partDetails.value.title || 'Part Details'),
       path: `/part/${route.params.part_number}`
     }
   ]

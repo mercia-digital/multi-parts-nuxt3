@@ -215,7 +215,6 @@ if (fetchError.value) {
     align-items: center;
     justify-content: center;
     margin-bottom: 1rem;
-    height: 100px;
 }
 
 .manufacturer-logo-placeholder {
