@@ -95,7 +95,6 @@
 import { ref, computed } from 'vue'
 import { useRoute, navigateTo, useHead, useAsyncData } from '#imports'
 import { usePartsService } from '~/services/partsService'
-import he from 'he'
 import { fixEncodingErrors } from '~/composables/fixEncodingErrors';
 // Optionally import UI components (e.g., Breadcrumbs) if they’re used in the template
 // import Breadcrumbs from '~/components/Breadcrumbs.vue'
