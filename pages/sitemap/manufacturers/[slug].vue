@@ -14,7 +14,7 @@
             :to="`/part/${part.part_number}`"
             class="hover:underline"
           >
-            {{ he.decode(part.title || '') }} -- {{ getPartNumber(part) }}
+            {{ fixEncodingErrors(part.title || '') }} -- {{ getPartNumber(part) }}
           </NuxtLink>
       </div>
     </div>
@@ -24,7 +24,7 @@
 <script setup>
 import { usePartsService } from '~/services/partsService';
 import { computed } from 'vue';
-import he from 'he';
+import { fixEncodingErrors } from '~/composables/fixEncodingErrors';
 
 // Disable default layout to exclude header and footer
 definePageMeta({

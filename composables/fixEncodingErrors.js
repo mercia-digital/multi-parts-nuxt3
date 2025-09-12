@@ -1,18 +1,41 @@
-import he from 'html-entities';
-const { decode } = he;
+// A map of common HTML entities for server-side decoding.
+const basicEntityMap = {
+  '&amp;': '&',
+  '&lt;': '<',
+  '&gt;': '>',
+  '&quot;': '"',
+  '&#39;': "'",
+  '&#x2F;': '/',
+};
+
+// A universal HTML decoding function.
+const decodeHtmlEntities = (encodedString) => {
+  if (typeof window !== 'undefined') {
+    // Client-side: Use the browser's built-in DOM parser for accuracy.
+    const parser = new DOMParser();
+    const dom = parser.parseFromString(`<!doctype html><body>${encodedString}`, 'text/html');
+    return dom.body.textContent;
+  } else {
+    // Server-side: Use a basic regex for performance. 
+    // This handles the most common cases without a heavy dependency.
+    return encodedString.replace(/(&[a-zA-Z0-9#]+;)/g, (entity) => {
+      return basicEntityMap[entity] || entity;
+    });
+  }
+};
 
 export const fixEncodingErrors = (text) => {
     if (!text) {
         return text;
     }
 
-    // First decode HTML entities
-    let cleaned = decode(text);
+    // First, decode HTML entities using our universal function.
+    let cleaned = decodeHtmlEntities(text);
 
-    // Clean up any hidden characters that might be breaking up sequences
-    cleaned = cleaned.replace(/\s+/g, ' ');  // Replace any whitespace sequences with a single space
+    // Clean up any hidden characters that might be breaking up sequences.
+    cleaned = cleaned.replace(/\s+/g, ' ');  // Replace any whitespace sequences with a single space.
 
-    // Map of solved mojibake issues - ordered by most common patterns first
+    // Map of solved mojibake issues - ordered by most common patterns first.
     const mojibakeMap = {
         // Common trademark/copyright patterns
         'â„¢': '™',     // Corrupted Trademark symbol (most common)
@@ -59,9 +82,8 @@ export const fixEncodingErrors = (text) => {
         'â‚¬': '€',     // Corrupted Euro symbol
     };
 
-    // Apply replacements
+    // Apply mojibake replacements.
     for (const [badString, goodChar] of Object.entries(mojibakeMap)) {
-        // Escape special regex characters in the badString
         const escapedBadString = badString.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         cleaned = cleaned.replace(new RegExp(escapedBadString, 'g'), goodChar);
     }

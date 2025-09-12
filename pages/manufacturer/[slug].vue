@@ -54,7 +54,7 @@
                          :alt="part.title" />
                   </div>
                   <div class="pn p-2"><label>Product Number</label>{{ getPartNumber(part) }}</div>
-                  <div class="title p-2 uppercase"><label>Product Description</label>{{ he.decode(part.title || '') }}</div>
+                  <div class="title p-2 uppercase"><label>Product Description</label>{{ fixEncodingErrors(part.title || '') }}</div>
                   <div class="actions p-2 flex justify-around">
                     <a :href="`/part/${part.part_number}`" class="button m-1">View Product</a>
                     <a v-if="part.manufacturer?.name !== 'NXT Power'" :href="`https://www.multi-inc.com/request-a-quote-parts?part_numbers=${getPartNumber(part)}`"
@@ -106,10 +106,10 @@
 <script setup>
 import { ref, computed, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useAsyncData, useHead } from '#app';
+import { useAsyncData } from '#app';
 import { usePartsService, getManufacturerLogoUrl } from '~/services/partsService';
 import Breadcrumbs from '~/components/Breadcrumbs.vue';
-import he from 'he';
+import { fixEncodingErrors } from '~/composables/fixEncodingErrors';
 
 const route = useRoute();
 const router = useRouter();
@@ -245,7 +245,7 @@ const getImageUrl = (image) => {
 // Decode HTML content
 const manufacturerContent = computed(() => {
   if (!manufacturer.value || !manufacturer.value.description) return '';
-  return he.decode(manufacturer.value.description);
+  return fixEncodingErrors(manufacturer.value.description);
 });
 
 // Breadcrumb items
@@ -268,9 +268,9 @@ const goBack = () => {
 useHead({
   title: `${manufacturer.value?.name || 'Manufacturer'} | MULTI, INC. Parts Catalog`,
   meta: [
-    { name: 'description', content: manufacturer.value?.description ? he.decode(manufacturer.value.description).replace(/<[^>]*>/g, '').substring(0, 160) : 'Browse parts by this manufacturer.' },
+    { name: 'description', content: manufacturer.value?.description ? fixEncodingErrors(manufacturer.value.description).replace(/<[^>]*>/g, '').substring(0, 160) : 'Browse parts by this manufacturer.' },
     { property: 'og:title', content: `${manufacturer.value?.name || 'Manufacturer'} | MULTI, INC. Parts Catalog` },
-    { property: 'og:description', content: manufacturer.value?.description ? he.decode(manufacturer.value.description).replace(/<[^>]*>/g, '').substring(0, 160) : 'Browse parts by this manufacturer.' },
+    { property: 'og:description', content: manufacturer.value?.description ? fixEncodingErrors(manufacturer.value.description).replace(/<[^>]*>/g, '').substring(0, 160) : 'Browse parts by this manufacturer.' },
     { name: 'canonical', content: `https://parts.multi-inc.com/manufacturer/${route.params.slug}` }
   ],
   link: [
@@ -283,7 +283,7 @@ useHead({
         '@context': 'https://schema.org',
         '@type': 'Organization',
         'name': manufacturer.value?.name || 'Manufacturer',
-        'description': manufacturer.value?.description ? he.decode(manufacturer.value.description).replace(/<[^>]*>/g, '') : 'Browse parts by this manufacturer.'
+        'description': manufacturer.value?.description ? fixEncodingErrors(manufacturer.value.description).replace(/<[^>]*>/g, '') : 'Browse parts by this manufacturer.'
       })
     },
     {
